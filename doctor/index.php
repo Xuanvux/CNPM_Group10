@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- CSS stylesheets -->
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
         
     <title>Dashboard</title>
+    
+    <!-- Inline CSS -->
     <style>
         .dashbord-tables,.doctor-heade{
             animation: transitionIn-Y-over 0.5s;
@@ -24,15 +29,14 @@
         }
     </style>
     
-    
 </head>
 <body>
     <?php
 
-    //learn from w3schools.com
-
+    // Bắt đầu phiên làm việc
     session_start();
 
+    // Kiểm tra phiên đăng nhập
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
             header("location: ../login.php");
@@ -45,21 +49,18 @@
     }
     
 
-    //import database
+    // Import cơ sở dữ liệu
     include("../connection.php");
     $userrow = $database->query("select * from doctor where docemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
     $userid= $userfetch["docid"];
     $username=$userfetch["docname"];
 
-
-    //echo $userid;
-    //echo $username;
-    
     ?>
     <div class="container">
         <div class="menu">
             <table class="menu-container" border="0">
+                <!-- Thông tin cá nhân -->
                 <tr>
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
@@ -74,39 +75,44 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
+                                    <!-- Đăng xuất -->
                                     <a href="../logout.php" ><input type="button" value="Đăng xuất" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                     </table>
                     </td>
                 </tr>
+                <!-- Menu -->
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-dashbord menu-active menu-icon-dashbord-active" >
+                        <!-- Dashboard -->
                         <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Dashboard</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Cuộc hẹn của tôi</p></a></div>
+                        <!-- Cuộc hẹn của tôi -->
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Cuộc hẹn của tôi</p></div></a>
                     </td>
                 </tr>
-                
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session">
+                        <!-- Phiên của tôi -->
                         <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
+                        <!-- Bệnh nhân của tôi -->
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
+                        <!-- Cài đặt -->
+                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
                     </td>
                 </tr>
-                
             </table>
         </div>
         <div class="dash-body" style="margin-top: 15px">
@@ -115,15 +121,17 @@
                         <tr >
                             
                             <td colspan="1" class="nav-bar" >
-                            <p style="font-size: 23px;padding-left:12px;font-weight: 600;margin-left:20px;">     Dashboard</p>
+                            <!-- Tiêu đề -->
+                            <p style="font-size: 23px;padding-left:12px;font-weight: 600;margin-left:20px;">Dashboard</p>
                           
                             </td>
                             <td width="25%">
 
                             </td>
                             <td width="15%">
+                                <!-- Hiển thị ngày hiện tại -->
                                 <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                                    Ngày hôm nay
+                                    Ngày hôm nay
                                 </p>
                                 <p class="heading-sub12" style="padding: 0;margin: 0;">
                                     <?php 
@@ -143,6 +151,7 @@
                                 </p>
                             </td>
                             <td width="10%">
+                                <!-- Button lịch -->
                                 <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                             </td>
         
@@ -155,6 +164,7 @@
                     <table class="filter-container doctor-header" style="border: none;width:95%" border="0" >
                     <tr>
                         <td >
+                            <!-- Chào mừng -->
                             <h3>Chào mừng!</h3>
                             <h1><?php echo $username  ?>.</h1>
                             <p>Cảm ơn bạn đã tham gia với chúng tôi. Chúng tôi luôn cố gắng mang đến cho bạn một dịch vụ hoàn chỉnh<br>
@@ -184,6 +194,7 @@
                                             </tr>
                                             <tr>
                                                 <td style="width: 25%;">
+                                                    <!-- Số lượng bác sĩ -->
                                                     <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex">
                                                         <div>
                                                                 <div class="h1-dashboard">
@@ -197,6 +208,7 @@
                                                     </div>
                                                 </td>
                                                 <td style="width: 25%;">
+                                                    <!-- Số lượng bệnh nhân -->
                                                     <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex;">
                                                         <div>
                                                                 <div class="h1-dashboard">
@@ -212,6 +224,7 @@
                                                 </tr>
                                                 <tr>
                                                 <td style="width: 25%;">
+                                                    <!-- Số lượng đặt chỗ mới -->
                                                     <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex; ">
                                                         <div>
                                                                 <div class="h1-dashboard" >
@@ -227,6 +240,7 @@
                                                 </td>
 
                                                 <td style="width: 25%;">
+                                                    <!-- Số lượng phiên hôm nay -->
                                                     <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex;padding-top:21px;padding-bottom:21px;">
                                                         <div>
                                                                 <div class="h1-dashboard">
@@ -243,19 +257,9 @@
                                             </tr>
                                         </table>
                                     </center>
-
-
-
-
-
-
-
-
                                 </td>
                                 <td>
-
-
-                            
+                                    <!-- Các phiên sắp tới -->
                                     <p id="anim" style="font-size: 20px;font-weight:600;padding-left: 40px;">Các phiên sắp tới của bạn cho đến tuần sau</p>
                                     <center>
                                         <div class="abc scroll" style="height: 250px;padding: 0;margin: 0;">
@@ -339,13 +343,6 @@
                                         </table>
                                         </div>
                                         </center>
-
-
-
-
-
-
-
                                 </td>
                             </tr>
                         </table>

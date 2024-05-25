@@ -1,52 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- Khai báo đây là một tài liệu HTML -->
+<html lang="en"> <!-- Khai báo ngôn ngữ của trang là tiếng Anh -->
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/animations.css">  
-    <link rel="stylesheet" href="../css/main.css">  
-    <link rel="stylesheet" href="../css/admin.css">
-        
-    <title>Bệnh nhân</title>
+    <meta charset="UTF-8"> <!-- Khai báo bộ ký tự là UTF-8 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Khai báo sử dụng chế độ tương thích với Internet Explorer -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Khai báo thiết lập hiển thị trên các thiết bị di động -->
+    <link rel="stylesheet" href="../css/animations.css">  <!-- Liên kết tới file CSS chứa các hiệu ứng -->
+    <link rel="stylesheet" href="../css/main.css">  <!-- Liên kết tới file CSS chính -->
+    <link rel="stylesheet" href="../css/admin.css"> <!-- Liên kết tới file CSS cho phần quản trị -->
+
+    <title>Bệnh nhân</title> <!-- Đặt tiêu đề cho trang -->
     <style>
         .popup{
-            animation: transitionIn-Y-bottom 0.5s;
+            animation: transitionIn-Y-bottom 0.5s; <!-- CSS cho hiệu ứng xuất hiện của popup -->
         }
         .sub-table{
-            animation: transitionIn-Y-bottom 0.5s;
+            animation: transitionIn-Y-bottom 0.5s; <!-- CSS cho hiệu ứng xuất hiện của bảng con -->
         }
-</style>
+    </style>
 </head>
 <body>
     <?php
 
-    //learn from w3schools.com
+    // Học từ w3schools.com
 
-    session_start();
+    session_start(); // Bắt đầu phiên làm việc
 
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
-            header("location: ../login.php");
+            header("location: ../login.php"); // Chuyển hướng người dùng đến trang đăng nhập nếu không có phiên làm việc hoặc không phải là bác sĩ
         }else{
             $useremail=$_SESSION["user"];
         }
 
     }else{
-        header("location: ../login.php");
+        header("location: ../login.php"); // Chuyển hướng người dùng đến trang đăng nhập nếu không có phiên làm việc
     }
     
 
-    //import database
-    include("../connection.php");
-    $userrow = $database->query("select * from doctor where docemail='$useremail'");
+    // Import database
+    include("../connection.php"); // Liên kết tới file kết nối CSDL
+    $userrow = $database->query("select * from doctor where docemail='$useremail'"); // Truy vấn thông tin bác sĩ từ CSDL
     $userfetch=$userrow->fetch_assoc();
-    $userid= $userfetch["docid"];
-    $username=$userfetch["docname"];
-
-
-    //echo $userid;
-    //echo $username;
+    $userid= $userfetch["docid"]; // Lấy ID của bác sĩ
+    $username=$userfetch["docname"]; // Lấy tên của bác sĩ
     ?>
     <div class="container">
     <div class="menu">
@@ -65,12 +61,13 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
+                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a> <!-- Button đăng xuất -->
                                 </td>
                             </tr>
                     </table>
                     </td>
                 </tr>
+                <!-- Các nút điều hướng -->
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-dashbord" >
                         <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Dashboard</p></a></div></a>
@@ -84,22 +81,23 @@
                 
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
+                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient menu-active menu-icon-patient-active">
-                        <a href="patient.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
+                        <a href="patient.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings   ">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
+                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
                     </td>
                 </tr>
                 
             </table>
         </div>
+        <!-- Xử lý tìm kiếm và lọc -->
         <?php       
 
                     $selecttype="My";
@@ -117,11 +115,11 @@
                             if($_POST["showonly"]=='all'){
                                 $sqlmain= "select * from patient";
                                 $selecttype="All";
-                                $current="Tất cả bệnh nhân";
+                                $current="Tất cả bệnh nhân";
                             }else{
                                 $sqlmain= "select * from appointment inner join patient on patient.pid=appointment.pid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.docid=$userid;";
                                 $selecttype="My";
-                                $current="Chỉ những bệnh nhân của tôi";
+                                $current="Chỉ những bệnh nhân của tôi";
                             }
                         }
                     }else{
@@ -141,16 +139,14 @@
                         
                     </td>
                     <td>
-                        
+                        <!-- Form tìm kiếm -->
                         <form action="" method="post" class="header-search">
 
-                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Tìm tên bệnh nhân hoặc Email" list="patient">&nbsp;&nbsp;
+                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Tìm tên bệnh nhân hoặc Email" list="patient">&nbsp;&nbsp;
                             
                             <?php
                                 echo '<datalist id="patient">';
                                 $list11 = $database->query($sqlmain);
-                               //$list12= $database->query("select * from appointment inner join patient on patient.pid=appointment.pid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.docid=1;");
-
                                 for ($y=0;$y<$list11->num_rows;$y++){
                                     $row00=$list11->fetch_assoc();
                                     $d=$row00["pname"];
@@ -163,14 +159,14 @@
 ?>
                             
                        
-                            <input type="Submit" value="Tìm kiếm" name="search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
+                            <input type="Submit" value="Tìm kiếm" name="search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
                         
                         </form>
                         
                     </td>
                     <td width="15%">
                         <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                            Ngày hôm nay
+                            Ngày hôm nay
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
@@ -209,13 +205,13 @@
                         <select name="showonly" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
                                     <option value="" disabled selected hidden><?php echo $current   ?></option><br/>
                                     <option value="my">Chỉ bệnh nhân của tôi</option><br/>
-                                    <option value="all">Tất cả bệnh nhân</option><br/>
+                                    <option value="all">Tất cả bệnh nhân</option><br/>
                                     
 
                         </select>
                     </td>
                     <td width="12%">
-                        <input type="submit"  name="filter" value="Lọc" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
+                        <input type="submit"  name="filter" value="Lọc" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
                         </form>
                     </td>
 
@@ -243,7 +239,7 @@
                                 <th class="table-headin">
                                     
                                 
-                                    Số CCCD
+                                    Số CCCD
                                     
                                 </th>
                                 <th class="table-headin">
@@ -257,12 +253,12 @@
                                 </th>
                                 <th class="table-headin">
                                     
-                                    Ngày sinh
+                                    Ngày sinh
                                     
                                 </th>
                                 <th class="table-headin">
                                     
-                                    Sự kiện
+                                    Sự kiện
                                     
                                 </tr>
                         </thead>
@@ -272,7 +268,6 @@
 
                                 
                                 $result= $database->query($sqlmain);
-                                //echo $sqlmain;
                                 if($result->num_rows==0){
                                     echo '<tr>
                                     <td colspan="4">
@@ -343,6 +338,7 @@
             </table>
         </div>
     </div>
+    <!-- Popup hiển thị chi tiết bệnh nhân -->
     <?php 
     if($_GET){
         
@@ -370,13 +366,13 @@
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
                                 </td>
                             </tr>
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">ID bệnh nhân: </label>
+                                    <label for="name" class="form-label">ID bệnh nhân: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -410,7 +406,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">Số CCCD: </label>
+                                    <label for="nic" class="form-label">Số CCCD: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -430,7 +426,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Địa chỉ: </label>
+                                    <label for="spec" class="form-label">Địa chỉ: </label>
                                     
                                 </td>
                             </tr>
@@ -442,7 +438,7 @@
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Ngày sinh: </label>
+                                    <label for="name" class="form-label">Ngày sinh: </label>
                                 </td>
                             </tr>
                             <tr>

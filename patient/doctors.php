@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Thiết lập các siêu dữ liệu -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Liên kết với các tệp CSS -->
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
         
-    <title>Bác sĩ</title>
+    <!-- Tiêu đề trang -->
+    <title>Bác sĩ</title>
+    <!-- CSS nội bộ -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
@@ -16,39 +20,41 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-</style>
+    </style>
 </head>
 <body>
     <?php
-
-    //learn from w3schools.com
-
+    // Bắt đầu phiên làm việc
     session_start();
 
+    // Kiểm tra xem người dùng đã đăng nhập chưa và kiểu người dùng có phải là "p" không
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='p'){
-            header("location: ../login.php");
+            header("location: ../login.php"); // Chuyển hướng người dùng đến trang đăng nhập nếu chưa đăng nhập hoặc không phải là người dùng "p"
         }else{
-            $useremail=$_SESSION["user"];
+            $useremail=$_SESSION["user"]; // Lấy email người dùng từ phiên đã lưu
         }
 
     }else{
-        header("location: ../login.php");
+        header("location: ../login.php"); // Chuyển hướng người dùng đến trang đăng nhập nếu chưa đăng nhập
     }
-    
 
-    //import database
+    // Kết nối đến cơ sở dữ liệu
     include("../connection.php");
+
+    // Truy vấn cơ sở dữ liệu để lấy thông tin bệnh nhân
     $userrow = $database->query("select * from patient where pemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
     $userid= $userfetch["pid"];
     $username=$userfetch["pname"];
-
     ?>
+    <!-- Phần giao diện người dùng -->
     <div class="container">
+        <!-- Menu bên trái -->
         <div class="menu">
             <table class="menu-container" border="0">
                 <tr>
+                    <!-- Phần thông tin người dùng -->
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
                             <tr>
@@ -56,60 +62,66 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
+                                    <!-- Hiển thị tên và email của người dùng -->
                                     <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
                                     <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
                                 </td>
                             </tr>
                             <tr>
+                                <!-- Đăng xuất -->
                                 <td colspan="2">
-                                <a href="../logout.php" ><input type="button" value="Đăng xuất" class="logout-btn btn-primary-soft btn"></a>
+                                    <a href="../logout.php" ><input type="button" value="Đăng xuất" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
-                    </table>
+                        </table>
                     </td>
-                
                 </tr>
+                <!-- Các liên kết menu -->
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-home " >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Trang chủ</p></a></div></a>
+                        <!-- Liên kết đến trang chính -->
+                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Trang chủ</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor menu-active menu-icon-doctor-active">
-                        <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Tât cả bác sĩ</p></a></div>
+                        <!-- Liên kết đến trang danh sách bác sĩ -->
+                        <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Tất cả bác sĩ</p></a></div>
                     </td>
                 </tr>
-                
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session">
+                        <!-- Liên kết đến trang lịch hẹn -->
                         <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên đã lên lịch</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-appoinment">
+                        <!-- Liên kết đến trang đặt chỗ -->
                         <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Đặt chỗ của tôi</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
+                        <!-- Liên kết đến trang cài đặt -->
+                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
                     </td>
                 </tr>
-                
             </table>
         </div>
+        <!-- Phần nội dung trang -->
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
+                    <!-- Phần nút quay lại -->
                     <td width="13%">
-                        <a href="doctors.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở về</font></button></a>
+                        <a href="doctors.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở về</font></button></a>
                     </td>
                     <td>
-                        
+                        <!-- Form tìm kiếm bác sĩ -->
                         <form action="" method="post" class="header-search">
-
-                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm tên bác sĩ hoặc email" list="doctors">&nbsp;&nbsp;
-                            
+                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm tên bác sĩ hoặc email" list="doctors">&nbsp;&nbsp;
+                            <!-- Danh sách tên bác sĩ để lọc khi tìm kiếm -->
                             <?php
                                 echo '<datalist id="doctors">';
                                 $list11 = $database->query("select  docname,docemail from  doctor;");
@@ -123,17 +135,15 @@
                                 };
 
                             echo ' </datalist>';
-?>
-                            
-                       
-                            <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
-                        
+                            ?>
+                            <!-- Nút tìm kiếm -->
+                            <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
                         </form>
-                        
                     </td>
+                    <!-- Phần hiển thị ngày hiện tại -->
                     <td width="15%">
                         <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                            Ngày hôm nay
+                            Ngày hôm nay
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
@@ -144,20 +154,18 @@
                         ?>
                         </p>
                     </td>
+                    <!-- Phần nút mở lịch -->
                     <td width="10%">
                         <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
-
-
                 </tr>
-               
-                
+                <!-- Tiêu đề danh sách bác sĩ -->
                 <tr>
                     <td colspan="4" style="padding-top:10px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ (<?php echo $list11->num_rows; ?>)</p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ (<?php echo $list11->num_rows; ?>)</p>
                     </td>
-                    
                 </tr>
+                <!-- Phần hiển thị danh sách bác sĩ -->
                 <?php
                     if($_POST){
                         $keyword=$_POST["search"];
@@ -167,11 +175,7 @@
                         $sqlmain= "select * from doctor order by docid desc";
 
                     }
-
-
-
                 ?>
-                  
                 <tr>
                    <td colspan="4">
                        <center>
@@ -180,23 +184,16 @@
                         <thead>
                         <tr>
                                 <th class="table-headin">
-                                    
-                                
-                                Tên bác sĩ
-                                
+                                    Tên bác sĩ
                                 </th>
                                 <th class="table-headin">
                                     Email
                                 </th>
                                 <th class="table-headin">
-                                    
                                     Chuyên khoa
-                                    
                                 </th>
                                 <th class="table-headin">
-                                    
-                                    Sự kiện
-                                    
+                                    Sự kiện
                                 </tr>
                         </thead>
                         <tbody>
@@ -215,8 +212,7 @@
                                     
                                     <br>
                                     <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
-                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị danh sách bác sĩ &nbsp;</font></button>
-                                    </a>
+                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị danh sách bác sĩ &nbsp;</font></button></a>
                                     </center>
                                     <br><br><br><br>
                                     </td>
@@ -234,8 +230,7 @@
                                     $spcil_array= $spcil_res->fetch_assoc();
                                     $spcil_name=$spcil_array["sname"];
                                     echo '<tr>
-                                        <td> &nbsp;'.
-                                        substr($name,0,30)
+                                        <td> &nbsp;'.substr($name,0,30)
                                         .'</td>
                                         <td>
                                         '.substr($email,0,20).'
@@ -266,12 +261,10 @@
                         </center>
                    </td> 
                 </tr>
-                       
-                        
-                        
             </table>
         </div>
     </div>
+    <!-- Xác nhận xóa bác sĩ -->
     <?php 
     if($_GET){
         
@@ -283,10 +276,10 @@
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
-                        <h2>Bạn có chắc?</h2>
+                        <h2>Bạn có chắc?</h2>
                         <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
-                            Bạn muốn xóa bản ghi này<br>('.substr($nameget,0,40).').
+                            Bạn muốn xóa bản ghi này<br>('.substr($nameget,0,40).').
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -299,6 +292,7 @@
             </div>
             ';
         }elseif($action=='view'){
+            // Lấy thông tin bác sĩ từ cơ sở dữ liệu và hiển thị lên giao diện
             $sqlmain = "SELECT * FROM doctor WHERE docid=?";
             $stmt = $database->prepare($sqlmain);
             $stmt->bind_param("i",$id);
@@ -318,6 +312,7 @@
             $spcil_name=$spcil_array["sname"];
             $nic=$row['docnic'];
             $tele=$row['doctel'];
+            // Hiển thị thông tin bác sĩ trong một popup trên trang
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
@@ -408,6 +403,7 @@
             </div>
             ';
         }elseif($action=='session'){
+            // Hiển thị thông báo xác nhận chuyển hướng đến trang xem phiên của bác sĩ
             $name=$_GET["name"];
             echo '
             <div id="popup1" class="overlay">
@@ -436,6 +432,7 @@
             ';
         }
         }elseif($action=='edit'){
+            // Lấy thông tin bác sĩ để chỉnh sửa và hiển thị form chỉnh sửa thông tin
             $sqlmain= "select * from doctor where docid=?";
             $stmt = $database->prepare($sqlmain);
             $stmt->bind_param("i",$id);
@@ -468,6 +465,7 @@
 
                 );
 
+            // Hiển thị form chỉnh sửa thông tin bác sĩ và thông báo lỗi nếu có
             if($error_1!='4'){
                     echo '
                     <div id="popup1" class="overlay">
@@ -601,6 +599,7 @@
                     </div>
                     ';
         }else{
+            // Hiển thị thông báo sửa thành công
             echo '
                 <div id="popup1" class="overlay">
                         <div class="popup">
@@ -627,7 +626,6 @@
 
         }; 
     };
-
 ?>
 </div>
 

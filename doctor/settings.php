@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
-        
 
-
-    <title>Cài đặt</title>
+    <title>Cài đặt</title>
+    <!-- CSS inline để áp dụng hiệu ứng transition -->
     <style>
         .dashbord-tables{
             animation: transitionIn-Y-over 0.5s;
@@ -22,16 +21,13 @@
             animation: transitionIn-Y-bottom 0.5s;
         }
     </style>
-    
-    
 </head>
 <body>
     <?php
-
-    //learn from w3schools.com
-
+    // Bắt đầu phiên
     session_start();
 
+    // Kiểm tra nếu người dùng đã đăng nhập và có quyền truy cập
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
             header("location: ../login.php");
@@ -43,26 +39,24 @@
         header("location: ../login.php");
     }
     
-
-    //import database
+    // Kết nối đến cơ sở dữ liệu và lấy thông tin của người dùng đăng nhập
     include("../connection.php");
     $userrow = $database->query("select * from doctor where docemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
     $userid= $userfetch["docid"];
     $username=$userfetch["docname"];
-
-
-    //echo $userid;
-    //echo $username;
-    
     ?>
+    <!-- Phần hiển thị menu và nội dung -->
     <div class="container">
         <div class="menu">
+            <!-- Menu bên trái -->
             <table class="menu-container" border="0">
+                <!-- Phần hiển thị thông tin người dùng -->
                 <tr>
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
                             <tr>
+                                <!-- Hiển thị ảnh đại diện và tên người dùng -->
                                 <td width="30%" style="padding-left:20px" >
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
@@ -71,14 +65,16 @@
                                     <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
                                 </td>
                             </tr>
+                            <!-- Nút logout -->
                             <tr>
                                 <td colspan="2">
                                     <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
-                    </table>
+                        </table>
                     </td>
                 </tr>
+                <!-- Các liên kết đến các trang trong hệ thống -->
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-dashbord" >
                         <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Dashboard</p></a></div></a>
@@ -89,181 +85,171 @@
                         <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Cuộc hẹn của tôi</p></a></div>
                     </td>
                 </tr>
-                
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
+                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings  menu-active menu-icon-settings-active">
-                        <a href="settings.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Cài đặt</p></a></div>
+                        <a href="settings.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Cài đặt</p></a></div>
                     </td>
                 </tr>
-                
             </table>
         </div>
+        <!-- Phần nội dung của trang -->
         <div class="dash-body" style="margin-top: 15px">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;" >
-                        
-                        <tr >
-                            
-                        <td width="13%" >
-                    <a href="settings.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                <tr >
+                    <!-- Nút quay lại -->
+                    <td width="13%" >
+                        <a href="settings.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
                     </td>
                     <td>
-                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Cài đặt</p>
-                                           
+                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Cài đặt</p>
                     </td>
-                    
-                            <td width="15%">
-                                <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                                    Ngày hôm nay
-                                </p>
-                                <p class="heading-sub12" style="padding: 0;margin: 0;">
-                                    <?php 
+                    <!-- Hiển thị ngày hôm nay -->
+                    <td width="15%">
+                        <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
+                            Ngày hôm nay
+                        </p>
+                        <p class="heading-sub12" style="padding: 0;margin: 0;">
+                            <?php 
                                 date_default_timezone_set('Asia/Kolkata');
-        
                                 $today = date('Y-m-d');
                                 echo $today;
 
-
+                                // Lấy số lượng bệnh nhân, bác sĩ, cuộc hẹn, và lịch trình cho ngày hôm nay
                                 $patientrow = $database->query("select  * from  patient;");
                                 $doctorrow = $database->query("select  * from  doctor;");
                                 $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
                                 $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
-
-
-                                ?>
-                                </p>
-                            </td>
-                            <td width="10%">
-                                <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
-                            </td>
-        
-        
-                        </tr>
-                <tr>
-                    <td colspan="4">
-                        
-                        <center>
-                        <table class="filter-container" style="border: none;" border="0">
-                            <tr>
-                                <td colspan="4">
-                                    <p style="font-size: 20px">&nbsp;</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 25%;">
-                                    <a href="?action=edit&id=<?php echo $userid ?>&error=0" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/doctors-hover.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard">
-                                                    Cài đặt tài khoản  &nbsp;
-
-                                                </div><br>
-                                                <div class="h3-dashboard" style="font-size: 15px;">
-                                                Chỉnh sửa chi tiết tài khoản của bạn và thay đổi mật khẩu
-                                                </div>
-                                        </div>
-                                                
-                                    </div>
-                                    </a>
-                                </td>
-                                
-                                
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <p style="font-size: 5px">&nbsp;</p>
-                                </td>
-                            </tr>
-                            <tr>
-                            <td style="width: 25%;">
-                                    <a href="?action=view&id=<?php echo $userid ?>" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting " style="background-image: url('../img/icons/view-iceblue.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard" >
-                                                Xem chi tiết tài khoản
-                                                    
-                                                </div><br>
-                                                <div class="h3-dashboard"  style="font-size: 15px;">
-                                                Xem thông tin cá nhân Về tài khoản của bạn
-                                                </div>
-                                        </div>
-                                                
-                                    </div>
-                                    </a>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <p style="font-size: 5px">&nbsp;</p>
-                                </td>
-                            </tr>
-                            <tr>
-                            <td style="width: 25%;">
-                                    <a href="?action=drop&id=<?php echo $userid.'&name='.$username ?>" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/patients-hover.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard" style="color: #ff5050;">
-                                                    Xóa tài khoản
-                                                    
-                                                </div><br>
-                                                <div class="h3-dashboard"  style="font-size: 15px;">
-                                                Sẽ xóa vĩnh viễn tài khoản của bạn
-                                                </div>
-                                        </div>
-                                                
-                                    </div>
-                                    </a>
-                                </td>
-                                
-                            </tr>
-                        </table>
-                    </center>
+                            ?>
+                        </p>
+                    </td>
+                    <!-- Icon hiển thị lịch -->
+                    <td width="10%">
+                        <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
                 </tr>
-            
+                <!-- Phần chức năng cài đặt -->
+                <tr>
+                    <td colspan="4">
+                        <center>
+                            <table class="filter-container" style="border: none;" border="0">
+                                <!-- Dòng trống -->
+                                <tr>
+                                    <td colspan="4">
+                                        <p style="font-size: 20px">&nbsp;</p>
+                                    </td>
+                                </tr>
+                                <!-- Các tabs chức năng -->
+                                <tr>
+                                    <td style="width: 25%;">
+                                        <!-- Chỉnh sửa thông tin bác sĩ -->
+                                        <a href="?action=edit&id=<?php echo $userid ?>&error=0" class="non-style-link">
+                                            <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex">
+                                                <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/doctors-hover.svg');"></div>
+                                                <div>
+                                                    <div class="h1-dashboard">
+                                                        Cài đặt tài khoản
+                                                    </div><br>
+                                                    <div class="h3-dashboard" style="font-size: 15px;">
+                                                        Chỉnh sửa chi tiết tài khoản của bạn và thay đổi mật khẩu
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <!-- Dòng trống -->
+                                <tr>
+                                    <td colspan="4">
+                                        <p style="font-size: 5px">&nbsp;</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 25%;">
+                                        <!-- Xem thông tin tài khoản -->
+                                        <a href="?action=view&id=<?php echo $userid ?>" class="non-style-link">
+                                            <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
+                                                <div class="btn-icon-back dashboard-icons-setting " style="background-image: url('../img/icons/view-iceblue.svg');"></div>
+                                                <div>
+                                                    <div class="h1-dashboard" >
+                                                        Xem chi tiết tài khoản
+                                                    </div><br>
+                                                    <div class="h3-dashboard"  style="font-size: 15px;">
+                                                        Xem thông tin cá nhân Về tài khoản của bạn
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <!-- Dòng trống -->
+                                <tr>
+                                    <td colspan="4">
+                                        <p style="font-size: 5px">&nbsp;</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 25%;">
+                                        <!-- Xóa tài khoản -->
+                                        <a href="?action=drop&id=<?php echo $userid.'&name='.$username ?>" class="non-style-link">
+                                            <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
+                                                <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/patients-hover.svg');"></div>
+                                                <div>
+                                                    <div class="h1-dashboard" style="color: #ff5050;">
+                                                        Xóa tài khoản
+                                                    </div><br>
+                                                    <div class="h3-dashboard"  style="font-size: 15px;">
+                                                        Sẽ xóa vĩnh viễn tài khoản của bạn
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
+    <!-- Xử lý các action được truyền từ URL -->
     <?php 
     if($_GET){
-        
         $id=$_GET["id"];
         $action=$_GET["action"];
         if($action=='drop'){
             $nameget=$_GET["name"];
+            // Hiển thị popup xác nhận xóa tài khoản
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
-                        <h2>Are you sure?</h2>
+                        <h2>Bạn có chắc chắn không?</h2>
                         <a class="close" href="settings.php">&times;</a>
                         <div class="content">
-                            You want to delete this record<br>('.substr($nameget,0,40).').
-                            
+                            Bạn muốn xóa bản ghi này<br>('.substr($nameget,0,40).').
                         </div>
                         <div style="display: flex;justify-content: center;">
-                        <a href="delete-doctor.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
-                        <a href="settings.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
-
+                            <!-- Nút xác nhận và hủy -->
+                            <a href="delete-doctor.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Có&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
+                            <a href="settings.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;Không&nbsp;&nbsp;</font></button></a>
                         </div>
                     </center>
             </div>
             </div>
             ';
-        }elseif($action=='view'){
+        } elseif($action=='view') {
+            // Hiển thị thông tin chi tiết của tài khoản
             $sqlmain= "select * from doctor where docid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
@@ -276,6 +262,7 @@
             $spcil_name=$spcil_array["sname"];
             $nic=$row['docnic'];
             $tele=$row['doctel'];
+            // Popup hiển thị thông tin
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
@@ -283,20 +270,17 @@
                         <h2></h2>
                         <a class="close" href="settings.php">&times;</a>
                         <div class="content">
-                            Hệ thống quản lý bệnh viện<br>
-                            
+                            Hệ thống quản lý bệnh viện<br>
                         </div>
                         <div style="display: flex;justify-content: center;">
                         <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
-                        
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
                                 </td>
                             </tr>
-                            
+                            <!-- Hiển thị thông tin -->
                             <tr>
-                                
                                 <td class="label-td" colspan="2">
                                     <label for="name" class="form-label">Tên: </label>
                                 </td>
@@ -305,7 +289,6 @@
                                 <td class="label-td" colspan="2">
                                     '.$name.'<br><br>
                                 </td>
-                                
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
@@ -319,7 +302,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">Số CCCD: </label>
+                                    <label for="nic" class="form-label">Số CCCD: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -340,24 +323,19 @@
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="spec" class="form-label">Chuyên khoa: </label>
-                                    
                                 </td>
                             </tr>
                             <tr>
-                            <td class="label-td" colspan="2">
-                            '.$spcil_name.'<br><br>
-                            </td>
+                                <td class="label-td" colspan="2">
+                                '.$spcil_name.'<br><br>
+                                </td>
                             </tr>
+                            <!-- Nút OK -->
                             <tr>
                                 <td colspan="2">
                                     <a href="settings.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                                
-                                    
                                 </td>
-                
                             </tr>
-                           
-
                         </table>
                         </div>
                     </center>
@@ -365,7 +343,8 @@
             </div>
             </div>
             ';
-        }elseif($action=='edit'){
+        } elseif($action=='edit') {
+            // Lấy thông tin chi tiết tài khoản để chỉnh sửa
             $sqlmain= "select * from doctor where docid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
@@ -379,179 +358,130 @@
             $nic=$row['docnic'];
             $tele=$row['doctel'];
 
+            // Lấy thông báo lỗi từ URL
             $error_1=$_GET["error"];
-                $errorlist= array(
-                    '1'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Đã có tài khoản cho địa chỉ Email này.</label>',
-                    '2'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Lỗi cấu hình mật khẩu! Sửa lại mật khẩu</label>',
-                    '3'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>',
-                    '4'=>"",
-                    '0'=>'',
+            $errorlist= array(
+                '1'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Đã có tài khoản cho địa chỉ Email này.</label>',
+                '2'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Lỗi cấu hình mật khẩu! Sửa lại mật khẩu</label>',
+                '3'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>',
+                '4'=>"",
+                '0'=>'',
+            );
 
-                );
-
+            // Hiển thị form chỉnh sửa thông tin
             if($error_1!='4'){
-                    echo '
-                    <div id="popup1" class="overlay">
-                            <div class="popup">
-                            <center>
-                            
-                                <a class="close" href="settings.php">&times;</a> 
-                                <div style="display: flex;justify-content: center;">
-                                <div class="abc">
-                                <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
-                                <tr>
-                                        <td class="label-td" colspan="2">'.
-                                            $errorlist[$error_1]
-                                        .'</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Edit Doctor Details.</p>
-                                        Doctor ID : '.$id.' (Tự động xuất)<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <form action="edit-doc.php" method="POST" class="add-new-form">
-                                            <label for="Email" class="form-label">Email: </label>
-                                            <input type="hidden" value="'.$id.'" name="id00">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                        <input type="hidden" name="oldemail" value="'.$email.'" >
-                                        <input type="email" name="email" class="input-text" placeholder="Email" value="'.$email.'" required><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        
-                                        <td class="label-td" colspan="2">
-                                            <label for="name" class="form-label">Tên: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="text" name="name" class="input-text" placeholder="Tên bác sĩ" value="'.$name.'" required><br>
-                                        </td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="nic" class="form-label">Số CCCD: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="text" name="nic" class="input-text" placeholder="Số CCCD" value="'.$nic.'" required><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="Tele" class="form-label">SĐT: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="tel" name="Tele" class="input-text" placeholder="SĐT" value="'.$tele.'" required><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="spec" class="form-label">Chọn chuyên khoa: (Hiện tại'.$spcil_name.')</label>
-                                            
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <select name="spec" id="" class="box">';
-                                                
-                
-                                                $list11 = $database->query("select  * from  specialties;");
-                
-                                                for ($y=0;$y<$list11->num_rows;$y++){
-                                                    $row00=$list11->fetch_assoc();
-                                                    $sn=$row00["sname"];
-                                                    $id00=$row00["id"];
-                                                    echo "<option value=".$id00.">$sn</option><br/>";
-                                                };
-                
-                
-                
-                                                
-                                echo     '       </select><br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="password" class="form-label">Mật khẩu: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="password" name="password" class="input-text" placeholder="Mật khẩu" required><br>
-                                        </td>
-                                    </tr><tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="cpassword" class="form-label">Xác nhận mật khẩu: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="password" name="cpassword" class="input-text" placeholder="Xác nhận mật khẩu" required><br>
-                                        </td>
-                                    </tr>
-                                    
-                        
-                                    <tr>
-                                        <td colspan="2">
-                                            <input type="reset" value="Làm mới" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        
-                                            <input type="submit" value="Lưu" class="login-btn btn-primary btn">
-                                        </td>
-                        
-                                    </tr>
-                                
-                                    </form>
-                                    </tr>
-                                </table>
-                                </div>
-                                </div>
-                            </center>
-                            <br><br>
-                    </div>
-                    </div>
-                    ';
-        }else{
-            echo '
+                echo '
                 <div id="popup1" class="overlay">
-                        <div class="popup">
+                    <div class="popup">
                         <center>
-                        <br><br><br><br>
-                            <h2>Edit Successfully!</h2>
+                            <a class="close" href="settings.php">&times;</a> 
+                            <div style="display: flex;justify-content: center;">
+                                <div class="abc">
+                                    <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
+                                        <tr>
+                                            <td class="label-td" colspan="2">'.
+                                                $errorlist[$error_1]
+                                            .'</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Chỉnh sửa thông tin tài khoản</p><br><br>
+                                            </td>
+                                        </tr>
+                                        <!-- Form chỉnh sửa -->
+                                        <form method="post" action="seting-edit.php">
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <label for="name" class="form-label">Tên: </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <input type="text" id="name" name="name" value="'.$name.'" class="form-field" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <label for="email" class="form-label">Email: </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <input type="email" id="email" name="email" value="'.$email.'" class="form-field" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <label for="nic" class="form-label">Số CCCD: </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <input type="text" id="nic" name="nic" value="'.$nic.'" class="form-field" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <label for="tele" class="form-label">SĐT: </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <input type="text" id="tele" name="tele" value="'.$tele.'" class="form-field" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <label for="spe" class="form-label">Chuyên khoa: </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <input type="text" id="spe" name="spe" value="'.$spcil_name.'" class="form-field" required>
+                                                </td>
+                                            </tr>
+                                            <input type="hidden" name="id" value="'.$id.'">
+                                            <tr>
+                                                <td class="label-td" colspan="2">
+                                                    <input type="submit" name="submit" value="Lưu" class="login-btn btn-primary btn" style="margin-left: 10%;width: 80%;height: 40px;background-color: #42A5F5;color: white;margin-top: 20px;" >
+                                                </td>
+                                            </tr>
+                                        </form>
+                                        <!-- Nút hủy -->
+                                        <tr>
+                                            <td class="label-td" colspan="2">
+                                                <a href="settings.php"><button class="login-btn btn-primary-soft btn" style="margin-left: 10%;width: 80%;height: 40px;margin-top: 20px;">Hủy</button></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+                ';
+            } else {
+                // Thông báo khi chỉnh sửa thành công
+                echo '
+                <div id="popup1" class="overlay">
+                    <div class="popup">
+                        <center>
+                            <h2></h2>
                             <a class="close" href="settings.php">&times;</a>
                             <div class="content">
-                            Nếu bạn cũng thay đổi email của mình Vui lòng đăng xuất và đăng nhập lại bằng email mới của bạn
-                                
+                                Chỉnh sửa thành công<br>
                             </div>
                             <div style="display: flex;justify-content: center;">
-                            
-                            <a href="settings.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                            <a href="../logout.php" class="non-style-link"><button  class="btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;Log out&nbsp;&nbsp;</font></button></a>
-
+                                <a href="settings.php"><button class="login-btn btn-primary btn" style="margin-left: 10%;width: 80%;height: 40px;margin-top: 20px;">OK</button></a>
                             </div>
-                            <br><br>
                         </center>
+                        <br><br>
+                    </div>
                 </div>
-                </div>
-    ';
-
-
-
-        }; }
-
+                ';
+            }
+        } 
     }
-        ?>
-
+    ?>
 </body>
 </html>

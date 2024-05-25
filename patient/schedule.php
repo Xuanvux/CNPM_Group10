@@ -16,28 +16,31 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-</style>
+    </style>
 </head>
 <body>
     <?php
 
-    //learn from w3schools.com
-
+    // Bắt đầu phiên làm việc
     session_start();
 
+    // Kiểm tra nếu đã đăng nhập
     if(isset($_SESSION["user"])){
+        // Kiểm tra nếu không phải là bệnh nhân hoặc chưa đăng ký loại người dùng
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='p'){
+            // Chuyển hướng đến trang đăng nhập nếu không phải là bệnh nhân
             header("location: ../login.php");
         }else{
             $useremail=$_SESSION["user"];
         }
 
     }else{
+        // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
         header("location: ../login.php");
     }
     
 
-    //import database
+    // Import database
     include("../connection.php");
     $sqlmain= "select * from patient where pemail=?";
     $stmt = $database->prepare($sqlmain);
@@ -48,16 +51,10 @@
     $userid= $userfetch["pid"];
     $username=$userfetch["pname"];
 
-
-    //echo $userid;
-    //echo $username;
-    
+    // Lấy ngày hiện tại
     date_default_timezone_set('Asia/Ho_Chi_Minh');
-
     $today = date('Y-m-d');
 
-
- //echo $userid;
  ?>
  <div class="container">
      <div class="menu">
@@ -70,42 +67,49 @@
                                  <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                              </td>
                              <td style="padding:0px;margin:0px;">
+                                 <!-- Hiển thị tên và email người dùng -->
                                  <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
                                  <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
                              </td>
                          </tr>
                          <tr>
                              <td colspan="2">
-                                 <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
+                                 <!-- Nút đăng xuất -->
+                                 <a href="../logout.php" ><input type="button" value="Đăng xuất" class="logout-btn btn-primary-soft btn"></a>
                              </td>
                          </tr>
-                 </table>
+                     </table>
                  </td>
              </tr>
              <tr class="menu-row" >
                     <td class="menu-btn menu-icon-home " >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Trang chủ</p></a></div></a>
+                        <!-- Liên kết đến trang chính -->
+                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Trang chủ</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor">
-                        <a href="doctors.php" class="non-style-link-menu"><div><p class="menu-text">Tất cả bác sĩ</p></a></div>
+                        <!-- Liên kết đến trang hiển thị tất cả bác sĩ -->
+                        <a href="doctors.php" class="non-style-link-menu"><div><p class="menu-text">Tất cả bác sĩ</p></a></div>
                     </td>
                 </tr>
                 
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session menu-active menu-icon-session-active">
+                        <!-- Liên kết đến trang hiển thị các phiên đã lên lịch -->
                         <a href="schedule.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Phiên đã lên lịch</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-appoinment">
+                        <!-- Liên kết đến trang hiển thị đặt chỗ của người dùng -->
                         <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Đặt chỗ của tôi</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
+                        <!-- Liên kết đến trang cài đặt -->
+                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
                     </td>
                 </tr>
                 
@@ -127,7 +131,7 @@
                             $sqlmain= "select * from schedule inner join doctor on schedule.docid=doctor.docid where schedule.scheduledate>='$today' and (doctor.docname='$keyword' or doctor.docname like '$keyword%' or doctor.docname like '%$keyword' or doctor.docname like '%$keyword%' or schedule.title='$keyword' or schedule.title like '$keyword%' or schedule.title like '%$keyword' or schedule.title like '%$keyword%' or schedule.scheduledate like '$keyword%' or schedule.scheduledate like '%$keyword' or schedule.scheduledate like '%$keyword%' or schedule.scheduledate='$keyword' )  order by schedule.scheduledate asc";
                             //echo $sqlmain;
                             $insertkey=$keyword;
-                            $searchtype="Search Result : ";
+                            $searchtype="Kết quả tìm kiếm : ";
                             $q='"';
                         }
 
@@ -143,9 +147,11 @@
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
                     <td width="13%" >
-                    <a href="schedule.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở lại</font></button></a>
+                    <!-- Nút trở lại trang trước -->
+                    <a href="schedule.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở lại</font></button></a>
                     </td>
                     <td >
+                            <!-- Form tìm kiếm -->
                             <form action="" method="post" class="header-search">
 
                                         <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm kiếm tên bác sĩ hoặc Email hoặc ngày (YYYY-MM-DD)" list="doctors" value="<?php  echo $insertkey ?>">&nbsp;&nbsp;
@@ -175,12 +181,12 @@
             ?>
                                         
                                 
-                                        <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
+                                        <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
                                         </form>
                     </td>
                     <td width="15%">
                         <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                            Today's Date
+                            Hôm nay
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
@@ -194,6 +200,7 @@
                         </p>
                     </td>
                     <td width="10%">
+                        <!-- Icon lịch -->
                         <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
 
@@ -203,6 +210,7 @@
                 
                 <tr>
                     <td colspan="4" style="padding-top:10px;width: 100%;" >
+                        <!-- Hiển thị tiêu đề và kết quả tìm kiếm (nếu có) -->
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)"><?php echo $searchtype." Sessions"."(".$result->num_rows.")"; ?> </p>
                         <p class="heading-main12" style="margin-left: 45px;font-size:22px;color:rgb(49, 49, 49)"><?php echo $q.$insertkey.$q ; ?> </p>
                     </td>
@@ -222,6 +230,7 @@
                             <?php
 
                                 if($result->num_rows==0){
+                                    // Hiển thị thông báo nếu không tìm thấy kết quả
                                     echo '<tr>
                                     <td colspan="4">
                                     <br><br><br><br>
@@ -239,7 +248,7 @@
                                     
                                 }
                                 else{
-                                    //echo $result->num_rows;
+                                    // Hiển thị các phiên đã lên lịch
                                 for ( $x=0; $x<($result->num_rows);$x++){
                                     echo "<tr>";
                                     for($q=0;$q<3;$q++){
@@ -269,10 +278,11 @@
                                                                 '.substr($docname,0,30).'
                                                             </div>
                                                             <div class="h4-search">
-                                                                '.$scheduledate.'<br>Bắt đầu: <b>@'.substr($scheduletime,0,5).'</b> (24h)
+                                                                '.$scheduledate.'<br>Bắt đầu: <b>@'.substr($scheduletime,0,5).'</b> (24h)
                                                             </div>
                                                             <br>
-                                                            <a href="booking.php?id='.$scheduleid.'" ><button  class="login-btn btn-primary-soft btn "  style="padding-top:11px;padding-bottom:11px;width:100%"><font class="tn-in-text">Đặt ngay</font></button></a>
+                                                            <!-- Liên kết đến trang đặt chỗ -->
+                                                            <a href="booking.php?id='.$scheduleid.'" ><button  class="login-btn btn-primary-soft btn "  style="padding-top:11px;padding-bottom:11px;width:100%"><font class="tn-in-text">Đặt ngay</font></button></a>
                                                     </div>
                                                             
                                                 </div>

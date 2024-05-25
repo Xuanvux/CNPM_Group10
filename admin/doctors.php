@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Khai báo các thẻ meta và link -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="../css/admin.css">
         
     <title>Doctors</title>
+    <!-- CSS inline style -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
@@ -21,29 +23,33 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+    // Học từ w3schools.com
 
     session_start();
 
+    // Kiểm tra người dùng đã đăng nhập và là admin chưa
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");
         }
 
     }else{
+        // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
         header("location: ../login.php");
     }
     
     
 
-    //import database
+    // Nhập cơ sở dữ liệu
     include("../connection.php");
 
     
     ?>
+    <!-- Phần menu -->
     <div class="container">
         <div class="menu">
             <table class="menu-container" border="0">
+                <!-- Thông tin người dùng -->
                 <tr>
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
@@ -58,13 +64,15 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
+                                    <!-- Đăng xuất -->
+                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                     </table>
                     </td>
                 
                 </tr>
+                <!-- Các mục menu -->
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-dashbord" >
                         <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Dashboard</p></a></div></a>
@@ -72,40 +80,44 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor menu-active menu-icon-doctor-active">
-                        <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Bác sĩ/ Y tá</p></a></div>
+                        <!-- Mục quản lý bác sĩ/y tá được chọn -->
+                        <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Bác sĩ/ Y tá</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-schedule">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Lịch trình</p></div></a>
+                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Lịch trình</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Lịch hẹn</p></a></div>
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Lịch hẹn</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân</p></a></div>
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân</p></a></div>
                     </td>
                 </tr>
 
             </table>
         </div>
+        <!-- Phần nội dung -->
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
+                <!-- Phần tiêu đề -->
                 <tr >
                     <td width="13%">
-                        <a href="doctors.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở lại</font></button></a>
+                        <!-- Nút quay lại -->
+                        <a href="doctors.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở lại</font></button></a>
                     </td>
                     <td>
-                        
+                        <!-- Form tìm kiếm bác sĩ -->
                         <form action="" method="post" class="header-search">
-
-                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm kiếm tên bệnh nhân hoặc email" list="doctors">&nbsp;&nbsp;
-                            
+                            <!-- Ô tìm kiếm -->
+                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm kiếm tên bác sĩ hoặc email" list="doctors">&nbsp;&nbsp;
                             <?php
+                                // Dữ liệu danh sách bác sĩ
                                 echo '<datalist id="doctors">';
                                 $list11 = $database->query("select  docname,docemail from  doctor;");
 
@@ -118,54 +130,56 @@
                                 };
 
                             echo ' </datalist>';
-?>
-                            
-                       
-                            <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
-                        
+                            ?>
+                            <!-- Nút tìm kiếm -->
+                            <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
                         </form>
-                        
                     </td>
                     <td width="15%">
+                        <!-- Hiển thị ngày hiện tại -->
                         <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                            Ngày hôm nay
+                            Ngày hôm nay
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
-                        date_default_timezone_set('Asia/Ho_Chi_Minh');
+                                date_default_timezone_set('Asia/Ho_Chi_Minh');
 
-                        $date = date('Y-m-d');
-                        echo $date;
-                        ?>
+                                $date = date('Y-m-d');
+                                echo $date;
+                            ?>
                         </p>
                     </td>
                     <td width="10%">
+                        <!-- Biểu tượng lịch -->
                         <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
-
-
                 </tr>
                
                 <tr >
                     <td colspan="2" style="padding-top:30px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Thêm bác sĩ/ y tá mới</p>
+                        <!-- Tiêu đề thêm mới bác sĩ/y tá -->
+                        <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Thêm bác sĩ/ y tá mới</p>
                     </td>
                     <td colspan="2">
-                        <a href="?action=add&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="display: flex;justify-content: center;align-items: center;margin-left:75px;background-image: url('../img/icons/add.svg');">Thêm mới</font></button>
+                        <!-- Nút thêm mới -->
+                        <a href="?action=add&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="display: flex;justify-content: center;align-items: center;margin-left:75px;background-image: url('../img/icons/add.svg');">Thêm mới</font></button>
                             </a></td>
                 </tr>
                 <tr>
                     <td colspan="4" style="padding-top:10px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ/ y tá (<?php echo $list11->num_rows; ?>)</p>
+                        <!-- Tiêu đề tất cả bác sĩ/y tá -->
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ/ y tá (<?php echo $list11->num_rows; ?>)</p>
                     </td>
                     
                 </tr>
                 <?php
+                    // Kiểm tra nếu đã gửi dữ liệu POST
                     if($_POST){
                         $keyword=$_POST["search"];
                         
                         $sqlmain= "select * from doctor where docemail='$keyword' or docname='$keyword' or docname like '$keyword%' or docname like '%$keyword' or docname like '%$keyword%'";
                     }else{
+                        // Truy vấn tất cả bác sĩ/y tá
                         $sqlmain= "select * from doctor order by docid desc";
 
                     }
@@ -176,29 +190,27 @@
                   
                 <tr>
                    <td colspan="4">
+                       <!-- Hiển thị bác sĩ/y tá trong bảng -->
                        <center>
                         <div class="abc scroll">
                         <table width="93%" class="sub-table scrolldown" border="0">
                         <thead>
                         <tr>
                                 <th class="table-headin">
-                                    
-                                
-                               Tên bác sĩ/ Y tá
-                                
+                                    <!-- Tiêu đề cột -->
+                                    Tên bác sĩ/ Y tá
                                 </th>
                                 <th class="table-headin">
                                     Email
                                 </th>
                                 <th class="table-headin">
-                                    
+                                    <!-- Chuyên khoa -->
                                     Chuyên khoa
-                                    
                                 </th>
                                 <th class="table-headin">
-                                    
-                                    Sự kiện
-                                    
+                                    <!-- Sự kiện -->
+                                    Sự kiện
+                                </th>
                                 </tr>
                         </thead>
                         <tbody>
@@ -208,16 +220,20 @@
                                 
                                 $result= $database->query($sqlmain);
 
+                                // Nếu không có kết quả
                                 if($result->num_rows==0){
                                     echo '<tr>
                                     <td colspan="4">
                                     <br><br><br><br>
                                     <center>
+                                    <!-- Hình ảnh không tìm thấy -->
                                     <img src="../img/notfound.svg" width="25%">
                                     
                                     <br>
+                                    <!-- Thông báo không tìm thấy -->
                                     <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn !</p>
-                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Doctors &nbsp;</font></button>
+                                    <!-- Nút hiển thị tất cả bác sĩ -->
+                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả Bác sĩ &nbsp;</font></button>
                                     </a>
                                     </center>
                                     <br><br><br><br>
@@ -226,39 +242,42 @@
                                     
                                 }
                                 else{
-                                for ( $x=0; $x<$result->num_rows;$x++){
-                                    $row=$result->fetch_assoc();
-                                    $docid=$row["docid"];
-                                    $name=$row["docname"];
-                                    $email=$row["docemail"];
-                                    $spe=$row["specialties"];
-                                    $spcil_res= $database->query("select sname from specialties where id='$spe'");
-                                    $spcil_array= $spcil_res->fetch_assoc();
-                                    $spcil_name=$spcil_array["sname"];
-                                    echo '<tr>
-                                        <td> &nbsp;'.
-                                        substr($name,0,30)
-                                        .'</td>
-                                        <td>
-                                        '.substr($email,0,20).'
-                                        </td>
-                                        <td>
-                                            '.substr($spcil_name,0,20).'
-                                        </td>
+                                    // Hiển thị thông tin các bác sĩ
+                                    for ($x=0; $x<$result->num_rows;$x++){
+                                        $row=$result->fetch_assoc();
+                                        $docid=$row["docid"];
+                                        $name=$row["docname"];
+                                        $email=$row["docemail"];
+                                        $spe=$row["specialties"];
+                                        $spcil_res= $database->query("select sname from specialties where id='$spe'");
+                                        $spcil_array= $spcil_res->fetch_assoc();
+                                        $spcil_name=$spcil_array["sname"];
+                                        echo '<tr>
+                                            <td> &nbsp;'.
+                                            substr($name,0,30)
+                                            .'</td>
+                                            <td>
+                                            '.substr($email,0,20).'
+                                            </td>
+                                            <td>
+                                                '.substr($spcil_name,0,20).'
+                                            </td>
 
-                                        <td>
-                                        <div style="display:flex;justify-content: center;">
-                                        <a href="?action=edit&id='.$docid.'&error=0" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-edit"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Sửa</font></button></a>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <a href="?action=view&id='.$docid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xem</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;
-                                       <a href="?action=drop&id='.$docid.'&name='.$name.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Gỡ</font></button></a>
-                                        </div>
-                                        </td>
-                                    </tr>';
-                                    
+                                            <td>
+                                            <div style="display:flex;justify-content: center;">
+                                            <!-- Nút sửa -->
+                                            <a href="?action=edit&id='.$docid.'&error=0" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-edit"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Sửa</font></button></a>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <!-- Nút xem -->
+                                            <a href="?action=view&id='.$docid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xem</font></button></a>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <!-- Nút gỡ bỏ -->
+                                            <a href="?action=drop&id='.$docid.'&name='.$name.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Gỡ</font></button></a>
+                                            </div>
+                                            </td>
+                                        </tr>';
+                                    }
                                 }
-                            }
                                  
                             ?>
  
@@ -276,6 +295,7 @@
         </div>
     </div>
     <?php 
+    // Kiểm tra GET
     if($_GET){
         
         $id=$_GET["id"];
@@ -287,13 +307,17 @@
                     <div class="popup">
                     <center>
                         <h2>Are you sure?</h2>
+                        <!-- Nút đóng popup -->
                         <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
-                            Bạn muốn xóa bản ghi này?<br>('.substr($nameget,0,40).').
+                            <!-- Xác nhận xóa -->
+                            Bạn muốn xóa bản ghi này?<br>('.substr($nameget,0,40).').
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
+                        <!-- Nút xác nhận xóa -->
                         <a href="delete-doctor.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
+                        <!-- Nút hủy xóa -->
                         <a href="doctors.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
 
                         </div>
@@ -302,6 +326,7 @@
             </div>
             ';
         }elseif($action=='view'){
+            // Truy vấn thông tin bác sĩ để xem
             $sqlmain= "select * from doctor where docid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
@@ -319,17 +344,19 @@
                     <div class="popup">
                     <center>
                         <h2></h2>
+                        <!-- Nút đóng popup -->
                         <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
                             eDoc Web App<br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
+                        <!-- Form hiển thị thông tin bác sĩ -->
                         <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
                                 </td>
                             </tr>
                             
@@ -357,7 +384,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">Số CCCD: </label>
+                                    <label for="nic" class="form-label">Số CCCD: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -377,7 +404,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Đặc sản: </label>
+                                    <label for="spec" class="form-label">Đặc sản: </label>
                                     
                                 </td>
                             </tr>
@@ -388,6 +415,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
+                                    <!-- Nút quay lại -->
                                     <a href="doctors.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
                                 
                                     
@@ -403,6 +431,8 @@
             </div>
             </div>
             ';
+
+
         }elseif($action=='add'){
                 $error_1=$_GET["error"];
                 $errorlist= array(
