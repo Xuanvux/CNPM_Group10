@@ -60,7 +60,7 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <!-- Hiển thị tên và email của user -->
+                                    <!-- Hiển thị tên và email của user. -->
                                     <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
                                     <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
                                 </td>

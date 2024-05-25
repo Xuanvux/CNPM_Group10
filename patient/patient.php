@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/admin.css">
         
     <title>Bệnh nhân</title>
-    <!-- CSS tùy chỉnh -->
+    <!-- CSS tùy chỉnh.ssss -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;

@@ -13,6 +13,6 @@
 	// Hủy phiên làm việc
 	session_destroy();
 
-	// Chuyển hướng người dùng đến trang đăng nhập với action=logout trong URL
+	// Chuyển hướng người dùng đến trang đăng nhập với action=logout trong URL.
 	header('Location: login.php?action=logout');
  ?>

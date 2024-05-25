@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/admin.css">
         
     <title>Lịch trình</title>
-    <!-- CSS inline -->
+    <!-- CSS inline. -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;

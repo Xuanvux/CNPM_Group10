@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">  <!-- Liên kết tới file CSS chính -->
     <link rel="stylesheet" href="../css/admin.css"> <!-- Liên kết tới file CSS cho phần quản trị -->
 
-    <title>Bệnh nhân</title> <!-- Đặt tiêu đề cho trang -->
+    <title>Bệnh nhân</title> <!-- Đặt tiêu đề cho trang. -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s; <!-- CSS cho hiệu ứng xuất hiện của popup -->

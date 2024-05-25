@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/admin.css">
 
     <title>Cài đặt</title>
-    <!-- CSS inline để áp dụng hiệu ứng transition -->
+    <!-- CSS inline để áp dụng hiệu ứng transition. -->
     <style>
         .dashbord-tables{
             animation: transitionIn-Y-over 0.5s;

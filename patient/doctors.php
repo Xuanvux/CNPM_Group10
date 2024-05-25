@@ -165,7 +165,7 @@
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ (<?php echo $list11->num_rows; ?>)</p>
                     </td>
                 </tr>
-                <!-- Phần hiển thị danh sách bác sĩ -->
+                <!-- Phần hiển thị danh sách bác sĩ. -->
                 <?php
                     if($_POST){
                         $keyword=$_POST["search"];

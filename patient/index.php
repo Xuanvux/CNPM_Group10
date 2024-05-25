@@ -10,7 +10,7 @@
         
     <title>Dashboard</title>
     <style>
-        /* CSS styles */
+        /* CSS styles. */
         .dashbord-tables{
             animation: transitionIn-Y-over 0.5s;
         }

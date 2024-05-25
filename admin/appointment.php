@@ -24,7 +24,7 @@
     // Bắt đầu session
     session_start();
 
-    // Kiểm tra xem người dùng đã đăng nhập chưa
+    // Kiểm tra xem người dùng đã đăng nhập chưa?
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");

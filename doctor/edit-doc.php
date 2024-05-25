@@ -2,7 +2,7 @@
     //import database
     include("../connection.php");
 
-    // Kiểm tra nếu có yêu cầu POST được gửi đi
+    // Kiểm tra nếu có yêu cầu POST được gửi đi.
     if($_POST){
         // Lấy tất cả thông tin từ form POST
         $result= $database->query("select * from webuser");

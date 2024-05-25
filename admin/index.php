@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/admin.css">
         
     <title>Dashboard</title>
-    <!-- CSS tùy chỉnh cho trang -->
+    <!-- CSS tùy chỉnh cho trang. -->
     <style>
         .dashbord-tables{
             animation: transitionIn-Y-over 0.5s;

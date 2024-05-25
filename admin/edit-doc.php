@@ -3,7 +3,7 @@
     // Import database
     include("../connection.php");
 
-    // Xử lý khi có yêu cầu POST được gửi đi
+    // Xử lý khi có yêu cầu POST được gửi đi.
     if($_POST){
         // Lấy thông tin từ form POST
         $name=$_POST['name'];

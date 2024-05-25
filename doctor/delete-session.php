@@ -9,7 +9,7 @@
             header("location: ../login.php");
         }
     }else{
-        // Nếu không có phiên tồn tại, chuyển hướng đến trang đăng nhập
+        // Nếu không có phiên tồn tại, chuyển hướng đến trang đăng nhập.
         header("location: ../login.php");
     }
     

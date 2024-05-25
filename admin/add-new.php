@@ -10,7 +10,7 @@
         
     <title>Bác Sĩ</title>
     <style>
-        /* Định dạng hiệu ứng cho popup */
+        /* Định dạng hiệu ứng cho popups */
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }

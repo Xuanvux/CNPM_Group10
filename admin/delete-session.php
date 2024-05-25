@@ -4,7 +4,7 @@
 
     // Kiểm tra xem phiên đã được xác định và người dùng đã đăng nhập chưa
     if(isset($_SESSION["user"])){
-        // Nếu người dùng chưa đăng nhập hoặc không phải là quản trị viên, chuyển hướng đến trang đăng nhập
+        // Nếu người dùng chưa đăng nhập hoặc không phải là quản trị viên, chuyển hướng đến trang đăng nhập.
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");
         }

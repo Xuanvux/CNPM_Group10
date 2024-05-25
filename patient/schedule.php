@@ -21,7 +21,7 @@
 <body>
     <?php
 
-    // Bắt đầu phiên làm việc
+    // Bắt đầu phiên làm việc.
     session_start();
 
     // Kiểm tra nếu đã đăng nhập

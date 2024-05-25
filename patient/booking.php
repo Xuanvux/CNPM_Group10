@@ -236,7 +236,7 @@
                                                         <div class="h1-search" style="font-size:25px;">
                                                             Session Details
                                                         </div><br><br>
-                                                        <!-- Hiển thị thông tin phiên và bác sĩ -->
+                                                        <!-- Hiển thị thông tin phiên và bác sĩ. -->
                                                         <div class="h3-search" style="font-size:18px;line-height:30px">
                                                             Tên bác sĩ:  &nbsp;&nbsp;<b>'.$docname.'</b><br>
                                                             Email:  &nbsp;&nbsp;<b>'.$docemail.'</b> 

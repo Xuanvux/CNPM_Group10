@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/admin.css">
     <!-- Tiêu đề trang -->
     <title>Lịch trình</title>
-    <!-- CSS tùy chỉnh -->
+    <!-- CSS tùy chỉnh. -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;

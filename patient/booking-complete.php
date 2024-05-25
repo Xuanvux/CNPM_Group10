@@ -41,7 +41,7 @@
             // Thêm thông tin cuộc hẹn vào database
             $sql2="insert into appointment(pid,apponum,scheduleid,appodate) values ($userid,$apponum,$scheduleid,'$date')";
             $result= $database->query($sql2);
-            // Chuyển hướng đến trang đặt chỗ với thông báo cuộc hẹn đã được thêm vào
+            // Chuyển hướng đến trang đặt chỗ với thông báo cuộc hẹn đã được thêm vào.
             header("location: appointment.php?action=booking-added&id=".$apponum."&titleget=none");
 
         }

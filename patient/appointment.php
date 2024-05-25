@@ -318,7 +318,7 @@
             </table>
         </div>
     </div>
-    <!-- Hiển thị popup thông báo -->
+    <!-- Hiển thị popup thông báo. -->
     <?php
     
     if($_GET){

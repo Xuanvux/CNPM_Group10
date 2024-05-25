@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">  
     <title>Settings</title>
-    <!-- Định dạng CSS -->
+    <!-- Định dạng CSS. -->
     <style>
         .dashbord-tables{
             animation: transitionIn-Y-over 0.5s;

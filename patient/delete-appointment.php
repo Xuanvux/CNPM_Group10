@@ -18,7 +18,7 @@
     
     // Xử lý yêu cầu GET
     if($_GET){
-        // Import file kết nối đến cơ sở dữ liệu
+        // Import file kết nối đến cơ sở dữ liệu.
         include("../connection.php");
         
         // Lấy ID cuộc hẹn cần xóa từ tham số truyền vào

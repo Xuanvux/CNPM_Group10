@@ -4,7 +4,7 @@
 
     // Kiểm tra nếu kết nối gặp lỗi
     if ($database->connect_error){
-        // Hiển thị thông báo lỗi và kết thúc chương trình
+        // Hiển thị thông báo lỗi và kết thúc chương trình..
         die("Connection failed:  ".$database->connect_error);
     }
 ?>

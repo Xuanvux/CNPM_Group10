@@ -12,7 +12,7 @@
 </head>
 <body>
     <?php
-    // Bắt đầu phiên làm việc
+    // Bắt đầu phiên làm việc...sss
     session_start();
     
     // Gán các biến session thành chuỗi rỗng

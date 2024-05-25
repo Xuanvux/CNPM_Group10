@@ -13,7 +13,7 @@
         
     <title>Dashboard</title>
     
-    <!-- Inline CSS -->
+    <!-- Inline CSS. -->
     <style>
         .dashbord-tables,.doctor-heade{
             animation: transitionIn-Y-over 0.5s;

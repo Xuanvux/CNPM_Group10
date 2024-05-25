@@ -61,7 +61,7 @@
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // Chuyển hướng về trang đăng xuất
+        // Chuyển hướng về trang đăng xuất.
         header("location: ../logout.php");
     }
 ?>

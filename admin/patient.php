@@ -14,7 +14,7 @@
     <!-- Tiêu đề trang -->
     <title>Bệnh nhân</title>
     
-    <!-- CSS tùy chỉnh -->
+    <!-- CSS tùy chỉnh. -->
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;

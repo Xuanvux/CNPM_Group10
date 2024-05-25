@@ -5,7 +5,7 @@
 
     // Xử lý yêu cầu POST
     if($_POST){
-        // Lấy dữ liệu từ form POST
+        // Lấy dữ liệu từ form POST.
         $result= $database->query("select * from webuser");
         $name=$_POST['name'];
         $nic=$_POST['nic'];
