@@ -10,6 +10,7 @@
         
     <title>Bác Sĩ</title>
     <style>
+        /* Định dạng hiệu ứng cho popup */
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }
@@ -17,29 +18,26 @@
 </head>
 <body>
     <?php
+    // Bắt đầu phiên làm việc PHP
 
-    // Học từ w3schools.com
-
+    // Bắt đầu hoặc tiếp tục một phiên
     session_start();
 
+    // Kiểm tra xem phiên đã được xác định và người dùng đã đăng nhập chưa
     if(isset($_SESSION["user"])){
+        // Nếu người dùng chưa đăng nhập hoặc không phải là quản trị viên, chuyển hướng đến trang đăng nhập
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");
         }
-
     }else{
         header("location: ../login.php");
     }
-    
-    
 
     // Import database
     include("../connection.php");
 
-
-
+    // Xử lý khi form được gửi đi
     if($_POST){
-        //print_r($_POST);
         $result= $database->query("select * from webuser");
         $name=$_POST['name'];
         $nic=$_POST['nic'];
@@ -49,41 +47,33 @@
         $password=$_POST['password'];
         $cpassword=$_POST['cpassword'];
         
+        // Kiểm tra mật khẩu và xác nhận mật khẩu có khớp nhau hay không
         if ($password==$cpassword){
             $error='3';
+            // Kiểm tra xem email đã được sử dụng chưa
             $result= $database->query("select * from webuser where email='$email';");
             if($result->num_rows==1){
                 $error='1';
             }else{
-
+                // Nếu chưa, thêm thông tin bác sĩ vào cơ sở dữ liệu
                 $sql1="insert into doctor(docemail,docname,docpassword,docnic,doctel,specialties) values('$email','$name','$password','$nic','$tele',$spec);";
                 $sql2="insert into webuser values('$email','d')";
                 $database->query($sql1);
                 $database->query($sql2);
 
-                //echo $sql1;
-                //echo $sql2;
-                $error= '4';
-                
+                // Chuyển hướng đến trang danh sách bác sĩ sau khi thêm
+                header("location: doctors.php?action=add&error=4");
+                exit(); // Kết thúc script
             }
-            
         }else{
-            $error='2';
+            $error='2'; // Mã lỗi cho trường hợp mật khẩu không khớp nhau
         }
-    
-    
-        
-        
     }else{
-        //header('location: signup.php');
-        $error='3';
+        $error='3'; // Mã lỗi mặc định khi không nhận được dữ liệu từ form
     }
-    
 
+    // Chuyển hướng đến trang danh sách bác sĩ với mã lỗi
     header("location: doctors.php?action=add&error=".$error);
     ?>
-    
-   
-
 </body>
-</html> 
+</html>

@@ -1,14 +1,15 @@
 <?php
-    // Bắt đầu hoặc tiếp tục một phiên làm việc
+    // Bắt đầu phiên làm việc
     session_start();
 
-    // Kiểm tra xem phiên đã được xác định và người dùng đã đăng nhập chưa
+    // Kiểm tra nếu phiên đã tồn tại
     if(isset($_SESSION["user"])){
-        // Nếu người dùng chưa đăng nhập hoặc không phải là quản trị viên, chuyển hướng đến trang đăng nhập
+        // Nếu không có người dùng đăng nhập hoặc người dùng không phải là quản trị viên, chuyển hướng đến trang đăng nhập
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");
         }
     }else{
+        // Nếu không có phiên tồn tại, chuyển hướng đến trang đăng nhập
         header("location: ../login.php");
     }
     
@@ -20,10 +21,10 @@
         // Lấy id từ yêu cầu GET
         $id=$_GET["id"];
         
-        // Xóa bản ghi từ bảng appointment với id tương ứng
+        // Xóa lịch hẹn có id tương ứng
         $sql= $database->query("delete from appointment where appoid='$id';");
         
-        // Chuyển hướng đến trang appointment sau khi xóa bản ghi
+        // Chuyển hướng đến trang danh sách lịch hẹn
         header("location: appointment.php");
     }
 ?>
