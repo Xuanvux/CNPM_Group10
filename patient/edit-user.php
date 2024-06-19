@@ -12,9 +12,9 @@
         //print_r($_POST);
         $result= $database->query("select * from webuser");
         $name=$_POST['name'];
-        $oldemail=$_POST["oldemail"];
         $nic=$_POST['nic'];
-        $spec=$_POST['spec'];
+        $oldemail=$_POST["oldemail"];
+        $address=$_POST['address'];
         $email=$_POST['email'];
         $tele=$_POST['Tele'];
         $password=$_POST['password'];
@@ -23,15 +23,20 @@
         
         if ($password==$cpassword){
             $error='3';
-            $result= $database->query("select doctor.docid from doctor inner join webuser on doctor.docemail=webuser.email where webuser.email='$email';");
+
+            $sqlmain= "select patient.pid from patient inner join webuser on patient.pemail=webuser.email where webuser.email=?;";
+            $stmt = $database->prepare($sqlmain);
+            $stmt->bind_param("s",$email);
+            $stmt->execute();
+            $result = $stmt->get_result();
             //$resultqq= $database->query("select * from doctor where docid='$id';");
             if($result->num_rows==1){
-                $id2=$result->fetch_assoc()["docid"];
+                $id2=$result->fetch_assoc()["pid"];
             }else{
                 $id2=$id;
             }
             
-            echo $id2."jdfjdfdh";
+
             if($id2!=$id){
                 $error='1';
                 //$resultqq1= $database->query("select * from doctor where docemail='$email';");
@@ -41,14 +46,13 @@
             }else{
 
                 //$sql1="insert into doctor(docemail,docname,docpassword,docnic,doctel,specialties) values('$email','$name','$password','$nic','$tele',$spec);";
-                $sql1="update doctor set docemail='$email',docname='$name',docpassword='$password',docnic='$nic',doctel='$tele',specialties=$spec where docid=$id ;";
+                $sql1="update patient set pemail='$email',pname='$name',ppassword='$password',pnic='$nic',ptel='$tele',paddress='$address' where pid=$id ;";
                 $database->query($sql1);
-
+                echo $sql1;
                 $sql1="update webuser set email='$email' where email='$oldemail' ;";
                 $database->query($sql1);
-
                 echo $sql1;
-                //echo $sql2;
+                
                 $error= '4';
                 
             }

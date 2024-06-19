@@ -8,22 +8,15 @@
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
         
-
-
-    <title>Cài đặt</title>
+    <title>Bác sĩ</title>
     <style>
-        .dashbord-tables{
-            animation: transitionIn-Y-over 0.5s;
-        }
-        .filter-container{
-            animation: transitionIn-X  0.5s;
+        .popup{
+            animation: transitionIn-Y-bottom 0.5s;
         }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-    </style>
-    
-    
+</style>
 </head>
 <body>
     <?php
@@ -33,7 +26,7 @@
     session_start();
 
     if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
+        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='p'){
             header("location: ../login.php");
         }else{
             $useremail=$_SESSION["user"];
@@ -46,15 +39,11 @@
 
     //import database
     include("../connection.php");
-    $userrow = $database->query("select * from doctor where docemail='$useremail'");
+    $userrow = $database->query("select * from patient where pemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
-    $userid= $userfetch["docid"];
-    $username=$userfetch["docname"];
+    $userid= $userfetch["pid"];
+    $username=$userfetch["pname"];
 
-
-    //echo $userid;
-    //echo $username;
-    
     ?>
     <div class="container">
         <div class="menu">
@@ -73,167 +62,213 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
+                                <a href="../logout.php" ><input type="button" value="Đăng xuất" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                     </table>
                     </td>
+                
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord" >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Dashboard</p></a></div></a>
+                    <td class="menu-btn menu-icon-home " >
+                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Trang chủ</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Cuộc hẹn của tôi</p></a></div>
+                    <td class="menu-btn menu-icon-doctor menu-active menu-icon-doctor-active">
+                        <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Tât cả bác sĩ</p></a></div>
                     </td>
                 </tr>
                 
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
+                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên đã lên lịch</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
+                    <td class="menu-btn menu-icon-appoinment">
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Đặt chỗ của tôi</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-settings  menu-active menu-icon-settings-active">
-                        <a href="settings.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Cài đặt</p></a></div>
+                    <td class="menu-btn menu-icon-settings">
+                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
                     </td>
                 </tr>
                 
             </table>
         </div>
-        <div class="dash-body" style="margin-top: 15px">
-            <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;" >
-                        
-                        <tr >
-                            
-                        <td width="13%" >
-                    <a href="settings.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+        <div class="dash-body">
+            <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
+                <tr >
+                    <td width="13%">
+                        <a href="doctors.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở về</font></button></a>
                     </td>
                     <td>
-                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Cài đặt</p>
-                                           
+                        
+                        <form action="" method="post" class="header-search">
+
+                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm tên bác sĩ hoặc email" list="doctors">&nbsp;&nbsp;
+                            
+                            <?php
+                                echo '<datalist id="doctors">';
+                                $list11 = $database->query("select  docname,docemail from  doctor;");
+
+                                for ($y=0;$y<$list11->num_rows;$y++){
+                                    $row00=$list11->fetch_assoc();
+                                    $d=$row00["docname"];
+                                    $c=$row00["docemail"];
+                                    echo "<option value='$d'><br/>";
+                                    echo "<option value='$c'><br/>";
+                                };
+
+                            echo ' </datalist>';
+?>
+                            
+                       
+                            <input type="Submit" value="Tìm kiếm" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
+                        
+                        </form>
+                        
+                    </td>
+                    <td width="15%">
+                        <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
+                            Ngày hôm nay
+                        </p>
+                        <p class="heading-sub12" style="padding: 0;margin: 0;">
+                            <?php 
+                        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+                        $date = date('Y-m-d');
+                        echo $date;
+                        ?>
+                        </p>
+                    </td>
+                    <td width="10%">
+                        <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
+                    </td>
+
+
+                </tr>
+               
+                
+                <tr>
+                    <td colspan="4" style="padding-top:10px;">
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ (<?php echo $list11->num_rows; ?>)</p>
                     </td>
                     
-                            <td width="15%">
-                                <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                                    Ngày hôm nay
-                                </p>
-                                <p class="heading-sub12" style="padding: 0;margin: 0;">
-                                    <?php 
-                                date_default_timezone_set('Asia/Kolkata');
-        
-                                $today = date('Y-m-d');
-                                echo $today;
-
-
-                                $patientrow = $database->query("select  * from  patient;");
-                                $doctorrow = $database->query("select  * from  doctor;");
-                                $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
-                                $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
-
-
-                                ?>
-                                </p>
-                            </td>
-                            <td width="10%">
-                                <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
-                            </td>
-        
-        
-                        </tr>
-                <tr>
-                    <td colspan="4">
-                        
-                        <center>
-                        <table class="filter-container" style="border: none;" border="0">
-                            <tr>
-                                <td colspan="4">
-                                    <p style="font-size: 20px">&nbsp;</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 25%;">
-                                    <a href="?action=edit&id=<?php echo $userid ?>&error=0" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/doctors-hover.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard">
-                                                    Cài đặt tài khoản  &nbsp;
-
-                                                </div><br>
-                                                <div class="h3-dashboard" style="font-size: 15px;">
-                                                Chỉnh sửa chi tiết tài khoản của bạn và thay đổi mật khẩu
-                                                </div>
-                                        </div>
-                                                
-                                    </div>
-                                    </a>
-                                </td>
-                                
-                                
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <p style="font-size: 5px">&nbsp;</p>
-                                </td>
-                            </tr>
-                            <tr>
-                            <td style="width: 25%;">
-                                    <a href="?action=view&id=<?php echo $userid ?>" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting " style="background-image: url('../img/icons/view-iceblue.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard" >
-                                                Xem chi tiết tài khoản
-                                                    
-                                                </div><br>
-                                                <div class="h3-dashboard"  style="font-size: 15px;">
-                                                Xem thông tin cá nhân Về tài khoản của bạn
-                                                </div>
-                                        </div>
-                                                
-                                    </div>
-                                    </a>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <p style="font-size: 5px">&nbsp;</p>
-                                </td>
-                            </tr>
-                            <tr>
-                            <td style="width: 25%;">
-                                    <a href="?action=drop&id=<?php echo $userid.'&name='.$username ?>" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/patients-hover.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard" style="color: #ff5050;">
-                                                    Xóa tài khoản
-                                                    
-                                                </div><br>
-                                                <div class="h3-dashboard"  style="font-size: 15px;">
-                                                Sẽ xóa vĩnh viễn tài khoản của bạn
-                                                </div>
-                                        </div>
-                                                
-                                    </div>
-                                    </a>
-                                </td>
-                                
-                            </tr>
-                        </table>
-                    </center>
-                    </td>
                 </tr>
-            
+                <?php
+                    if($_POST){
+                        $keyword=$_POST["search"];
+                        
+                        $sqlmain= "select * from doctor where docemail='$keyword' or docname='$keyword' or docname like '$keyword%' or docname like '%$keyword' or docname like '%$keyword%'";
+                    }else{
+                        $sqlmain= "select * from doctor order by docid desc";
+
+                    }
+
+
+
+                ?>
+                  
+                <tr>
+                   <td colspan="4">
+                       <center>
+                        <div class="abc scroll">
+                        <table width="93%" class="sub-table scrolldown" border="0">
+                        <thead>
+                        <tr>
+                                <th class="table-headin">
+                                    
+                                
+                                Tên bác sĩ
+                                
+                                </th>
+                                <th class="table-headin">
+                                    Email
+                                </th>
+                                <th class="table-headin">
+                                    
+                                    Chuyên khoa
+                                    
+                                </th>
+                                <th class="table-headin">
+                                    
+                                    Sự kiện
+                                    
+                                </tr>
+                        </thead>
+                        <tbody>
+                        
+                            <?php
+
+                                
+                                $result= $database->query($sqlmain);
+
+                                if($result->num_rows==0){
+                                    echo '<tr>
+                                    <td colspan="4">
+                                    <br><br><br><br>
+                                    <center>
+                                    <img src="../img/notfound.svg" width="25%">
+                                    
+                                    <br>
+                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
+                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị danh sách bác sĩ &nbsp;</font></button>
+                                    </a>
+                                    </center>
+                                    <br><br><br><br>
+                                    </td>
+                                    </tr>';
+                                    
+                                }
+                                else{
+                                for ( $x=0; $x<$result->num_rows;$x++){
+                                    $row=$result->fetch_assoc();
+                                    $docid=$row["docid"];
+                                    $name=$row["docname"];
+                                    $email=$row["docemail"];
+                                    $spe=$row["specialties"];
+                                    $spcil_res= $database->query("select sname from specialties where id='$spe'");
+                                    $spcil_array= $spcil_res->fetch_assoc();
+                                    $spcil_name=$spcil_array["sname"];
+                                    echo '<tr>
+                                        <td> &nbsp;'.
+                                        substr($name,0,30)
+                                        .'</td>
+                                        <td>
+                                        '.substr($email,0,20).'
+                                        </td>
+                                        <td>
+                                            '.substr($spcil_name,0,20).'
+                                        </td>
+
+                                        <td>
+                                        <div style="display:flex;justify-content: center;">
+                                        
+                                        <a href="?action=view&id='.$docid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xem</font></button></a>
+                                       &nbsp;&nbsp;&nbsp;
+                                       <a href="?action=session&id='.$docid.'&name='.$name.'"  class="non-style-link"><button  class="btn-primary-soft btn button-icon menu-icon-session-active"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Phiên</font></button></a>
+                                        </div>
+                                        </td>
+                                    </tr>';
+                                    
+                                }
+                            }
+                                 
+                            ?>
+ 
+                            </tbody>
+
+                        </table>
+                        </div>
+                        </center>
+                   </td> 
+                </tr>
+                       
+                        
+                        
             </table>
         </div>
     </div>
@@ -248,15 +283,15 @@
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
-                        <h2>Are you sure?</h2>
-                        <a class="close" href="settings.php">&times;</a>
+                        <h2>Bạn có chắc?</h2>
+                        <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
-                            You want to delete this record<br>('.substr($nameget,0,40).').
+                            Bạn muốn xóa bản ghi này<br>('.substr($nameget,0,40).').
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
                         <a href="delete-doctor.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
-                        <a href="settings.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
+                        <a href="doctors.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
 
                         </div>
                     </center>
@@ -264,14 +299,21 @@
             </div>
             ';
         }elseif($action=='view'){
-            $sqlmain= "select * from doctor where docid='$id'";
-            $result= $database->query($sqlmain);
-            $row=$result->fetch_assoc();
+            $sqlmain = "SELECT * FROM doctor WHERE docid=?";
+            $stmt = $database->prepare($sqlmain);
+            $stmt->bind_param("i",$id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
             $name=$row["docname"];
             $email=$row["docemail"];
             $spe=$row["specialties"];
             
-            $spcil_res= $database->query("select sname from specialties where id='$spe'");
+            $stmt = $database->prepare("select sname from specialties where id=?");
+            $stmt->bind_param("s",$spe);
+            $stmt->execute();
+            $spcil_res = $stmt->get_result();
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
             $nic=$row['docnic'];
@@ -281,9 +323,9 @@
                     <div class="popup">
                     <center>
                         <h2></h2>
-                        <a class="close" href="settings.php">&times;</a>
+                        <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
-                            Hệ thống quản lý bệnh viện<br>
+                           Hệ thống quản lý bệnh viện<br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -291,7 +333,7 @@
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
                                 </td>
                             </tr>
                             
@@ -329,7 +371,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">SĐT: </label>
+                                    <label for="Tele" class="form-label">Số điện thoại: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -350,7 +392,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <a href="settings.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
+                                    <a href="doctors.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
                                 
                                     
                                 </td>
@@ -365,15 +407,52 @@
             </div>
             </div>
             ';
+        }elseif($action=='session'){
+            $name=$_GET["name"];
+            echo '
+            <div id="popup1" class="overlay">
+                    <div class="popup">
+                    <center>
+                        <h2>Redirect to Doctors sessions?</h2>
+                        <a class="close" href="doctors.php">&times;</a>
+                        <div class="content">
+                        Bạn muốn xem Tất cả các phiên bằng <br>('.substr($name,0,40).').
+                            
+                        </div>
+                        <form action="schedule.php" method="post" style="display: flex">
+
+                                <input type="hidden" name="search" value="'.$name.'">
+
+                                
+                        <div style="display: flex;justify-content:center;margin-left:45%;margin-top:6%;;margin-bottom:6%;">
+                        
+                        <input type="submit"  value="Yes" class="btn-primary btn"   >
+                        
+                        
+                        </div>
+                    </center>
+            </div>
+            </div>
+            ';
+        }
         }elseif($action=='edit'){
-            $sqlmain= "select * from doctor where docid='$id'";
-            $result= $database->query($sqlmain);
+            $sqlmain= "select * from doctor where docid=?";
+            $stmt = $database->prepare($sqlmain);
+            $stmt->bind_param("i",$id);
+            $stmt->execute();
+            $result = $stmt->get_result();
             $row=$result->fetch_assoc();
+       
             $name=$row["docname"];
             $email=$row["docemail"];
             $spe=$row["specialties"];
             
-            $spcil_res= $database->query("select sname from specialties where id='$spe'");
+            $sqlmain= "select sname from specialties where id='?";
+            $stmt = $database->prepare($sqlmain);
+            $stmt->bind_param("s",$spe);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
             $nic=$row['docnic'];
@@ -395,7 +474,7 @@
                             <div class="popup">
                             <center>
                             
-                                <a class="close" href="settings.php">&times;</a> 
+                                <a class="close" href="doctors.php">&times;</a> 
                                 <div style="display: flex;justify-content: center;">
                                 <div class="abc">
                                 <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
@@ -406,8 +485,8 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Edit Doctor Details.</p>
-                                        Doctor ID : '.$id.' (Tự động xuất)<br><br>
+                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Sửa chi tiết bác sĩ</p>
+                                        ID bác sĩ : '.$id.' (Auto Generated)<br><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -419,7 +498,6 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                        <input type="hidden" name="oldemail" value="'.$email.'" >
                                         <input type="email" name="email" class="input-text" placeholder="Email" value="'.$email.'" required><br>
                                         </td>
                                     </tr>
@@ -458,7 +536,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="spec" class="form-label">Chọn chuyên khoa: (Hiện tại'.$spcil_name.')</label>
+                                            <label for="spec" class="form-label">Choose specialties: (Current'.$spcil_name.')</label>
                                             
                                         </td>
                                     </tr>
@@ -528,16 +606,15 @@
                         <div class="popup">
                         <center>
                         <br><br><br><br>
-                            <h2>Edit Successfully!</h2>
-                            <a class="close" href="settings.php">&times;</a>
+                            <h2>Sửa thành công!</h2>
+                            <a class="close" href="doctors.php">&times;</a>
                             <div class="content">
-                            Nếu bạn cũng thay đổi email của mình Vui lòng đăng xuất và đăng nhập lại bằng email mới của bạn
+                                
                                 
                             </div>
                             <div style="display: flex;justify-content: center;">
                             
-                            <a href="settings.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                            <a href="../logout.php" class="non-style-link"><button  class="btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;Log out&nbsp;&nbsp;</font></button></a>
+                            <a href="doctors.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
 
                             </div>
                             <br><br>
@@ -548,10 +625,11 @@
 
 
 
-        }; }
+        }; 
+    };
 
-    }
-        ?>
+?>
+</div>
 
 </body>
 </html>

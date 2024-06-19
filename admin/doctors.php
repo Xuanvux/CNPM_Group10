@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
         
-    <title>Bác sĩ</title>
+    <title>Doctors</title>
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
@@ -27,9 +27,7 @@
 
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
-            //header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
+            header("location: ../login.php");
         }
 
     }else{
@@ -60,7 +58,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                <a href="../logout.php" ><input type="button" value="Đăng xuất" class="logout-btn btn-primary-soft btn"></a>
+                                <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                     </table>
@@ -74,7 +72,7 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-doctor menu-active menu-icon-doctor-active">
-                        <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Bác sĩ</p></a></div>
+                        <a href="docators.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Bác sĩ/ Y tá</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -84,7 +82,7 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Cuộc hẹn</p></a></div>
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Lịch hẹn</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -105,7 +103,7 @@
                         
                         <form action="" method="post" class="header-search">
 
-                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm kiếm tên bác sĩ hoặc Email" list="doctors">&nbsp;&nbsp;
+                            <input type="search" name="search" class="input-text header-searchbar" placeholder="Tìm kiếm tên bệnh nhân hoặc email" list="doctors">&nbsp;&nbsp;
                             
                             <?php
                                 echo '<datalist id="doctors">';
@@ -150,7 +148,7 @@
                
                 <tr >
                     <td colspan="2" style="padding-top:30px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Thêm mớis</p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Thêm bác sĩ/ y tá mới</p>
                     </td>
                     <td colspan="2">
                         <a href="?action=add&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="display: flex;justify-content: center;align-items: center;margin-left:75px;background-image: url('../img/icons/add.svg');">Thêm mới</font></button>
@@ -158,7 +156,7 @@
                 </tr>
                 <tr>
                     <td colspan="4" style="padding-top:10px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ (<?php echo $list11->num_rows; ?>)</p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả bác sĩ/ y tá (<?php echo $list11->num_rows; ?>)</p>
                     </td>
                     
                 </tr>
@@ -186,7 +184,7 @@
                                 <th class="table-headin">
                                     
                                 
-                               Tên bác sĩ
+                               Tên bác sĩ/ Y tá
                                 
                                 </th>
                                 <th class="table-headin">
@@ -218,8 +216,8 @@
                                     <img src="../img/notfound.svg" width="25%">
                                     
                                     <br>
-                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
-                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả bác sĩ &nbsp;</font></button>
+                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn !</p>
+                                    <a class="non-style-link" href="doctors.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Doctors &nbsp;</font></button>
                                     </a>
                                     </center>
                                     <br><br><br><br>
@@ -254,7 +252,7 @@
                                         &nbsp;&nbsp;&nbsp;
                                         <a href="?action=view&id='.$docid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xem</font></button></a>
                                        &nbsp;&nbsp;&nbsp;
-                                       <a href="?action=drop&id='.$docid.'&name='.$name.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xóa</font></button></a>
+                                       <a href="?action=drop&id='.$docid.'&name='.$name.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Gỡ</font></button></a>
                                         </div>
                                         </td>
                                     </tr>';
@@ -288,7 +286,7 @@
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
-                        <h2>Bạn có chắc?</h2>
+                        <h2>Are you sure?</h2>
                         <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
                             Bạn muốn xóa bản ghi này?<br>('.substr($nameget,0,40).').
@@ -323,7 +321,7 @@
                         <h2></h2>
                         <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
-                            Hệ thống quản lý bệnh viện<br>
+                            eDoc Web App<br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -331,7 +329,7 @@
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
                                 </td>
                             </tr>
                             
@@ -379,7 +377,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Chuyên khoa: </label>
+                                    <label for="spec" class="form-label">Đặc sản: </label>
                                     
                                 </td>
                             </tr>
@@ -432,7 +430,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Thêm mới</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Thêm bác sĩ/ y tá mới</p><br><br>
                                 </td>
                             </tr>
                             
@@ -444,7 +442,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="text" name="name" class="input-text" placeholder="Tên bác sĩ" required><br>
+                                    <input type="text" name="name" class="input-text" placeholder="Tên bác sĩ/ y tá" required><br>
                                 </td>
                                 
                             </tr>
@@ -480,7 +478,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Chọn chuyên khoa: </label>
+                                    <label for="spec" class="form-label">Chọn chuyên ngành: </label>
                                     
                                 </td>
                             </tr>
@@ -489,7 +487,7 @@
                                     <select name="spec" id="" class="box" >';
                                         
         
-                                        $list11 = $database->query("select  * from  specialties;");
+                                        $list11 = $database->query("select  * from  specialties order by sname asc;");
         
                                         for ($y=0;$y<$list11->num_rows;$y++){
                                             $row00=$list11->fetch_assoc();
@@ -506,21 +504,21 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="password" class="form-label">Mậ khẩu: </label>
+                                    <label for="password" class="form-label">Mật khẩu: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="password" name="password" class="input-text" placeholder="Mật khẩu" required><br>
+                                    <input type="password" name="password" class="input-text" placeholder="Xác nhận mật khẩu" required><br>
                                 </td>
                             </tr><tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="cpassword" class="form-label">Xác nhận mật khẩu: </label>
+                                    <label for="cpassword" class="form-label">Xác nhận mật khẩu: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="password" name="cpassword" class="input-text" placeholder="Xác nhận mật khẩu" required><br>
+                                    <input type="password" name="cpassword" class="input-text" placeholder="Xác nhận mật khẩu" required><br>
                                 </td>
                             </tr>
                             
@@ -609,8 +607,8 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Sửa chi tiết</p>
-                                        ID bác sĩ : '.$id.' (Tự động xuất)<br><br>
+                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Sửa chi tiết bác sĩ/ y tá</p>
+                                        Doctor ID : '.$id.' (Auto Generated)<br><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -618,6 +616,7 @@
                                             <form action="edit-doc.php" method="POST" class="add-new-form">
                                             <label for="Email" class="form-label">Email: </label>
                                             <input type="hidden" value="'.$id.'" name="id00">
+                                            <input type="hidden" name="oldemail" value="'.$email.'" >
                                         </td>
                                     </tr>
                                     <tr>
@@ -633,7 +632,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="name" class="input-text" placeholder="Tên bác sĩ" value="'.$name.'" required><br>
+                                            <input type="text" name="name" class="input-text" placeholder="Tên bác sĩ/ y tá" value="'.$name.'" required><br>
                                         </td>
                                         
                                     </tr>
@@ -660,7 +659,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="spec" class="form-label">Chọn chuyên khoa: (Hiện tại'.$spcil_name.')</label>
+                                            <label for="spec" class="form-label">Chọn chuyên ngành: (Current'.$spcil_name.')</label>
                                             
                                         </td>
                                     </tr>
@@ -691,7 +690,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="password" name="password" class="input-text" placeholder="Mật khẩu" required><br>
+                                            <input type="password" name="password" class="input-text" placeholder="Xác nhận mật khẩu" required><br>
                                         </td>
                                     </tr><tr>
                                         <td class="label-td" colspan="2">

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
         
-    <title>Cuộc hẹn</title>
+    <title>Lịch trình</title>
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
@@ -26,10 +26,8 @@
     session_start();
 
     if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
+        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
         }
 
     }else{
@@ -38,17 +36,14 @@
     
     
 
-       //import database
-       include("../connection.php");
-       $userrow = $database->query("select * from doctor where docemail='$useremail'");
-       $userfetch=$userrow->fetch_assoc();
-       $userid= $userfetch["docid"];
-       $username=$userfetch["docname"];
-    //echo $userid;
+    //import database
+    include("../connection.php");
+
+    
     ?>
     <div class="container">
         <div class="menu">
-        <table class="menu-container" border="0">
+            <table class="menu-container" border="0">
                 <tr>
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
@@ -57,55 +52,55 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
-                                    <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
+                                    <p class="profile-title">Admin</p>
+                                    <p class="profile-subtitle">admin@gmail.com</p>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
+                                <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                     </table>
                     </td>
+                
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord " >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Dashboard</p></a></div></a>
+                    <td class="menu-btn menu-icon-dashbord" >
+                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Dashboard</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-appoinment  menu-active menu-icon-appoinment-active">
-                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Cuộc hẹn của tôi</p></a></div>
+                    <td class="menu-btn menu-icon-doctor ">
+                        <a href="doctors.php" class="non-style-link-menu "><div><p class="menu-text">Bác sĩ</p></a></div>
                     </td>
                 </tr>
-                
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
+                    <td class="menu-btn menu-icon-schedule menu-active menu-icon-schedule-active">
+                        <a href="schedule.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Lịch trình</p></div></a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-appoinment">
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Cuộc hẹn</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân</p></a></div>
                     </td>
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
-                    </td>
-                </tr>
-                
+
             </table>
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
                     <td width="13%" >
-                    <a href="appointment.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                    <a href="schedule.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở về</font></button></a>
                     </td>
                     <td>
-                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Người quản lý cuộc hẹn</p>
+                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Quản lý lịch trình</p>
                                            
                     </td>
                     <td width="15%">
@@ -120,7 +115,7 @@
                         $today = date('Y-m-d');
                         echo $today;
 
-                        $list110 = $database->query("select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  doctor.docid=$userid ");
+                        $list110 = $database->query("select  * from  schedule;");
 
                         ?>
                         </p>
@@ -131,10 +126,20 @@
 
 
                 </tr>
+               
+                <tr>
+                    <td colspan="4" >
+                        <div style="display: flex;margin-top: 40px;">
+                        <div class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49);margin-top: 5px;">Lên lịch một phiên</div>
+                        <a href="?action=add-session&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="margin-left:25px;background-image: url('../img/icons/add.svg');">Thêm một phiên</font></button>
+                        </a>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="4" style="padding-top:10px;width: 100%;" >
                     
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Cuộc hẹn của tôi (<?php echo $list110->num_rows; ?>)</p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả các phiên (<?php echo $list110->num_rows; ?>)</p>
                     </td>
                     
                 </tr>
@@ -155,7 +160,29 @@
                             <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
 
                         </td>
-                        
+                        <td width="5%" style="text-align: center;">
+                        Bác sĩ:
+                        </td>
+                        <td width="30%">
+                        <select name="docid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
+                            <option value="" disabled selected hidden>Chọn tên bác sĩ trong danh sách</option><br/>
+                                
+                            <?php 
+                            
+                                $list11 = $database->query("select  * from  doctor order by docname asc;");
+
+                                for ($y=0;$y<$list11->num_rows;$y++){
+                                    $row00=$list11->fetch_assoc();
+                                    $sn=$row00["docname"];
+                                    $id00=$row00["docid"];
+                                    echo "<option value=".$id00.">$sn</option><br/>";
+                                };
+
+
+                                ?>
+
+                        </select>
+                    </td>
                     <td width="12%">
                         <input type="submit"  name="filter" value=" Lọc" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
                         </form>
@@ -170,26 +197,43 @@
                 </tr>
                 
                 <?php
-
-
-                    $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  doctor.docid=$userid ";
-
                     if($_POST){
                         //print_r($_POST);
-                        
-
-
-                        
+                        $sqlpt1="";
                         if(!empty($_POST["sheduledate"])){
                             $sheduledate=$_POST["sheduledate"];
-                            $sqlmain.=" and schedule.scheduledate='$sheduledate' ";
+                            $sqlpt1=" schedule.scheduledate='$sheduledate' ";
+                        }
+
+
+                        $sqlpt2="";
+                        if(!empty($_POST["docid"])){
+                            $docid=$_POST["docid"];
+                            $sqlpt2=" doctor.docid=$docid ";
+                        }
+                        //echo $sqlpt2;
+                        //echo $sqlpt1;
+                        $sqlmain= "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid ";
+                        $sqllist=array($sqlpt1,$sqlpt2);
+                        $sqlkeywords=array(" where "," and ");
+                        $key2=0;
+                        foreach($sqllist as $key){
+
+                            if(!empty($key)){
+                                $sqlmain.=$sqlkeywords[$key2].$key;
+                                $key2++;
+                            };
                         };
-
-                        
-
                         //echo $sqlmain;
 
+                        
+                        
+                        //
+                    }else{
+                        $sqlmain= "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  order by schedule.scheduledate desc";
+
                     }
+
 
 
                 ?>
@@ -202,30 +246,23 @@
                         <thead>
                         <tr>
                                 <th class="table-headin">
-                                    Tên bệnh nhân
-                                </th>
-                                <th class="table-headin">
-                                    
-                                Số cuộc hẹn
-                                    
-                                </th>
-                               
-                                <th class="table-headin">
                                     
                                 
-                                    Tiêu đề phiên
-                                    
-                                    </th>
+                               Tiêu đề phiên
                                 
-                                <th class="table-headin" >
-                                    
-                                Ngày và giờ của phiên
-                                    
                                 </th>
                                 
                                 <th class="table-headin">
+                                    Bác sĩ
+                                </th>
+                                <th class="table-headin">
                                     
-                                Ngày hẹn
+                                Ngày & Giờ đã lên lịch
+                                    
+                                </th>
+                                <th class="table-headin">
+                                    
+                                Số lượng tối đa có thể đặt trước
                                     
                                 </th>
                                 
@@ -244,14 +281,14 @@
 
                                 if($result->num_rows==0){
                                     echo '<tr>
-                                    <td colspan="7">
+                                    <td colspan="4">
                                     <br><br><br><br>
                                     <center>
                                     <img src="../img/notfound.svg" width="25%">
                                     
                                     <br>
                                     <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
-                                    <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả &nbsp;</font></button>
+                                    <a class="non-style-link" href="schedule.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả các phiên &nbsp;</font></button>
                                     </a>
                                     </center>
                                     <br><br><br><br>
@@ -262,42 +299,33 @@
                                 else{
                                 for ( $x=0; $x<$result->num_rows;$x++){
                                     $row=$result->fetch_assoc();
-                                    $appoid=$row["appoid"];
                                     $scheduleid=$row["scheduleid"];
                                     $title=$row["title"];
                                     $docname=$row["docname"];
                                     $scheduledate=$row["scheduledate"];
                                     $scheduletime=$row["scheduletime"];
-                                    $pname=$row["pname"];
-                                    $apponum=$row["apponum"];
-                                    $appodate=$row["appodate"];
-                                    echo '<tr >
-                                        <td style="font-weight:600;"> &nbsp;'.
-                                        
-                                        substr($pname,0,25)
-                                        .'</td >
-                                        <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
-                                        '.$apponum.'
-                                        
-                                        </td>
+                                    $nop=$row["nop"];
+                                    echo '<tr>
+                                        <td> &nbsp;'.
+                                        substr($title,0,30)
+                                        .'</td>
                                         <td>
-                                        '.substr($title,0,15).'
+                                        '.substr($docname,0,20).'
                                         </td>
-                                        <td style="text-align:center;;">
-                                            '.substr($scheduledate,0,10).' @'.substr($scheduletime,0,5).'
-                                        </td>
-                                        
                                         <td style="text-align:center;">
-                                            '.$appodate.'
+                                            '.substr($scheduledate,0,10).' '.substr($scheduletime,0,5).'
+                                        </td>
+                                        <td style="text-align:center;">
+                                            '.$nop.'
                                         </td>
 
                                         <td>
                                         <div style="display:flex;justify-content: center;">
                                         
-                                        <!--<a href="?action=view&id='.$appoid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xem</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;-->
-                                       <a href="?action=drop&id='.$appoid.'&name='.$pname.'&session='.$title.'&apponum='.$apponum.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Hủy</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;</div>
+                                        <a href="?action=view&id='.$scheduleid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Xem</font></button></a>
+                                       &nbsp;&nbsp;&nbsp;
+                                       <a href="?action=drop&id='.$scheduleid.'&name='.$title.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Gỡ</font></button></a>
+                                        </div>
                                         </td>
                                     </tr>';
                                     
@@ -345,18 +373,18 @@
 
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Thêm phiên mới.</p><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Thêm mới phiên.</p><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                 <form action="add-session.php" method="POST" class="add-new-form">
-                                    <label for="title" class="form-label">Tiêu đề phiên : </label>
+                                    <label for="title" class="form-label">Tiêu đề phiên: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="text" name="title" class="input-text" placeholder="Tên phiên" required><br>
+                                    <input type="text" name="title" class="input-text" placeholder="Tên phiên này" required><br>
                                 </td>
                             </tr>
                             <tr>
@@ -371,7 +399,7 @@
                                     <option value="" disabled selected hidden>Chọn tên bác sĩ trong danh sách</option><br/>';
                                         
         
-                                        $list11 = $database->query("select  * from  doctor;");
+                                        $list11 = $database->query("select  * from  doctor order by docname asc;");
         
                                         for ($y=0;$y<$list11->num_rows;$y++){
                                             $row00=$list11->fetch_assoc();
@@ -421,7 +449,7 @@
                                 <td colspan="2">
                                     <input type="reset" value="Làm mới" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 
-                                    <input type="submit" value="Đặt phiên này" class="login-btn btn-primary btn" name="shedulesubmit">
+                                    <input type="submit" value="Thay thế phiên" class="login-btn btn-primary btn" name="shedulesubmit">
                                 </td>
                 
                             </tr>
@@ -443,10 +471,10 @@
                     <div class="popup">
                     <center>
                     <br><br>
-                        <h2>Session Placed.</h2>
+                        <h2>Phiên đã thay thế.</h2>
                         <a class="close" href="schedule.php">&times;</a>
                         <div class="content">
-                        '.substr($titleget,0,40).' was scheduled.<br><br>
+                        '.substr($titleget,0,40).' đã được lên lịch.<br><br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -460,23 +488,19 @@
             ';
         }elseif($action=='drop'){
             $nameget=$_GET["name"];
-            $session=$_GET["session"];
-            $apponum=$_GET["apponum"];
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
-                        <h2>Bạn có chắc chắn?</h2>
-                        <a class="close" href="appointment.php">&times;</a>
+                        <h2>Are you sure?</h2>
+                        <a class="close" href="schedule.php">&times;</a>
                         <div class="content">
-                            Bạn có muốn xóa bản ghi này?<br><br>
-                            Tên bệnh nhân: &nbsp;<b>'.substr($nameget,0,40).'</b><br>
-                            Số cuộc hẹn &nbsp; : <b>'.substr($apponum,0,40).'</b><br><br>
+                        Bạn muốn xóa bản ghi này<br>('.substr($nameget,0,40).').
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
-                        <a href="delete-appointment.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
-                        <a href="appointment.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
+                        <a href="delete-session.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
+                        <a href="schedule.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
 
                         </div>
                     </center>
@@ -484,99 +508,180 @@
             </div>
             '; 
         }elseif($action=='view'){
-            $sqlmain= "select * from doctor where docid='$id'";
+            $sqlmain= "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  where  schedule.scheduleid=$id";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
-            $name=$row["docname"];
-            $email=$row["docemail"];
-            $spe=$row["specialties"];
+            $docname=$row["docname"];
+            $scheduleid=$row["scheduleid"];
+            $title=$row["title"];
+            $scheduledate=$row["scheduledate"];
+            $scheduletime=$row["scheduletime"];
             
-            $spcil_res= $database->query("select sname from specialties where id='$spe'");
-            $spcil_array= $spcil_res->fetch_assoc();
-            $spcil_name=$spcil_array["sname"];
-            $nic=$row['docnic'];
-            $tele=$row['doctel'];
+           
+            $nop=$row['nop'];
+
+
+            $sqlmain12= "select * from appointment inner join patient on patient.pid=appointment.pid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.scheduleid=$id;";
+            $result12= $database->query($sqlmain12);
             echo '
             <div id="popup1" class="overlay">
-                    <div class="popup">
+                    <div class="popup" style="width: 70%;">
                     <center>
                         <h2></h2>
-                        <a class="close" href="doctors.php">&times;</a>
+                        <a class="close" href="schedule.php">&times;</a>
                         <div class="content">
-                            Hệ thống quản lý bệnh viện<br>
+                            
                             
                         </div>
-                        <div style="display: flex;justify-content: center;">
+                        <div class="abc scroll" style="display: flex;justify-content: center;">
                         <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
                                 </td>
                             </tr>
                             
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Tên: </label>
+                                    <label for="name" class="form-label">Tiêu đề phiên: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    '.$name.'<br><br>
+                                    '.$title.'<br><br>
                                 </td>
                                 
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="Email" class="form-label">Email: </label>
+                                    <label for="Email" class="form-label">Bác sĩ của buổi này: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
+                                '.$docname.'<br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">Số CCCD: </label>
+                                    <label for="nic" class="form-label">Lịch hẹn: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                '.$scheduledate.'<br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">SĐT: </label>
+                                    <label for="Tele" class="form-label">Thời gian dự kiến: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
+                                '.$scheduletime.'<br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Chuyên khoa: </label>
-                                    
+                                    <label for="spec" class="form-label"><b>Những bệnh nhân đã đăng ký buổi này:</b> ('.$result12->num_rows."/".$nop.')</label>
+                                    <br><br>
                                 </td>
                             </tr>
+
+                            
                             <tr>
-                            <td class="label-td" colspan="2">
-                            '.$spcil_name.'<br><br>
-                            </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="doctors.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                                
-                                    
-                                </td>
+                            <td colspan="4">
+                                <center>
+                                 <div class="abc scroll">
+                                 <table width="100%" class="sub-table scrolldown" border="0">
+                                 <thead>
+                                 <tr>   
+                                        <th class="table-headin">
+                                             Mã bệnh nhân
+                                         </th>
+                                         <th class="table-headin">
+                                             Tên bệnh nhân
+                                         </th>
+                                         <th class="table-headin">
+                                             
+                                         Số cuộc hẹn
+                                             
+                                         </th>
+                                        
+                                         
+                                         <th class="table-headin">
+                                             SĐT
+                                         </th>
+                                         
+                                 </thead>
+                                 <tbody>';
+                                 
                 
-                            </tr>
-                           
+                
+                                         
+                                         $result= $database->query($sqlmain12);
+                
+                                         if($result->num_rows==0){
+                                             echo '<tr>
+                                             <td colspan="7">
+                                             <br><br><br><br>
+                                             <center>
+                                             <img src="../img/notfound.svg" width="25%">
+                                             
+                                             <br>
+                                             <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
+                                             <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả các cuộc hẹn &nbsp;</font></button>
+                                             </a>
+                                             </center>
+                                             <br><br><br><br>
+                                             </td>
+                                             </tr>';
+                                             
+                                         }
+                                         else{
+                                         for ( $x=0; $x<$result->num_rows;$x++){
+                                             $row=$result->fetch_assoc();
+                                             $apponum=$row["apponum"];
+                                             $pid=$row["pid"];
+                                             $pname=$row["pname"];
+                                             $ptel=$row["ptel"];
+                                             
+                                             echo '<tr style="text-align:center;">
+                                                <td>
+                                                '.substr($pid,0,15).'
+                                                </td>
+                                                 <td style="font-weight:600;padding:25px">'.
+                                                 
+                                                 substr($pname,0,25)
+                                                 .'</td >
+                                                 <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
+                                                 '.$apponum.'
+                                                 
+                                                 </td>
+                                                 <td>
+                                                 '.substr($ptel,0,25).'
+                                                 </td>
+                                                 
+                                                 
+                
+                                                 
+                                             </tr>';
+                                             
+                                         }
+                                     }
+                                          
+                                     
+                
+                                    echo '</tbody>
+                
+                                 </table>
+                                 </div>
+                                 </center>
+                            </td> 
+                         </tr>
 
                         </table>
                         </div>
@@ -587,7 +692,7 @@
             ';  
     }
 }
-
+        
     ?>
     </div>
 

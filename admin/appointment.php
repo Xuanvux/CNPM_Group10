@@ -26,10 +26,8 @@
     session_start();
 
     if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
+        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
             header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
         }
 
     }else{
@@ -38,17 +36,14 @@
     
     
 
-       //import database
-       include("../connection.php");
-       $userrow = $database->query("select * from doctor where docemail='$useremail'");
-       $userfetch=$userrow->fetch_assoc();
-       $userid= $userfetch["docid"];
-       $username=$userfetch["docname"];
-    //echo $userid;
+    //import database
+    include("../connection.php");
+
+    
     ?>
     <div class="container">
         <div class="menu">
-        <table class="menu-container" border="0">
+            <table class="menu-container" border="0">
                 <tr>
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
@@ -57,8 +52,8 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
-                                    <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
+                                    <p class="profile-title">Admin</p>
+                                    <p class="profile-subtitle">admin@gmail.com</p>
                                 </td>
                             </tr>
                             <tr>
@@ -68,44 +63,44 @@
                             </tr>
                     </table>
                     </td>
+                
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord " >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Dashboard</p></a></div></a>
+                    <td class="menu-btn menu-icon-dashbord" >
+                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Dashboard</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-appoinment  menu-active menu-icon-appoinment-active">
-                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Cuộc hẹn của tôi</p></a></div>
+                    <td class="menu-btn menu-icon-doctor ">
+                        <a href="doctors.php" class="non-style-link-menu "><div><p class="menu-text">Bác sĩ</p></a></div>
                     </td>
                 </tr>
-                
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Phiên của tôi</p></div></a>
+                    <td class="menu-btn menu-icon-schedule ">
+                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Lịch trình</p></div></a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-appoinment menu-active menu-icon-appoinment-active">
+                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Lịch hẹn</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bệnh nhân của tôi</p></a></div>
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Bác sĩ</p></a></div>
                     </td>
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Cài đặt</p></a></div>
-                    </td>
-                </tr>
-                
+
             </table>
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
                     <td width="13%" >
-                    <a href="appointment.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                    <a href="appointment.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở lại</font></button></a>
                     </td>
                     <td>
-                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Người quản lý cuộc hẹn</p>
+                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Quản lý lịch hẹn</p>
                                            
                     </td>
                     <td width="15%">
@@ -120,7 +115,7 @@
                         $today = date('Y-m-d');
                         echo $today;
 
-                        $list110 = $database->query("select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  doctor.docid=$userid ");
+                        $list110 = $database->query("select  * from  appointment;");
 
                         ?>
                         </p>
@@ -128,13 +123,11 @@
                     <td width="10%">
                         <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
-
-
                 </tr>
                 <tr>
                     <td colspan="4" style="padding-top:10px;width: 100%;" >
                     
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Cuộc hẹn của tôi (<?php echo $list110->num_rows; ?>)</p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">Tất cả lịch hẹn (<?php echo $list110->num_rows; ?>)</p>
                     </td>
                     
                 </tr>
@@ -155,7 +148,29 @@
                             <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
 
                         </td>
-                        
+                        <td width="5%" style="text-align: center;">
+                        Bác sĩ:
+                        </td>
+                        <td width="30%">
+                        <select name="docid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
+                            <option value="" disabled selected hidden>Chọn tên bác sĩ trong danh sách</option><br/>
+                                
+                            <?php 
+                             
+                                $list11 = $database->query("select  * from  doctor order by docname asc;");
+
+                                for ($y=0;$y<$list11->num_rows;$y++){
+                                    $row00=$list11->fetch_assoc();
+                                    $sn=$row00["docname"];
+                                    $id00=$row00["docid"];
+                                    echo "<option value=".$id00.">$sn</option><br/>";
+                                };
+
+
+                                ?>
+
+                        </select>
+                    </td>
                     <td width="12%">
                         <input type="submit"  name="filter" value=" Lọc" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
                         </form>
@@ -170,26 +185,43 @@
                 </tr>
                 
                 <?php
-
-
-                    $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  doctor.docid=$userid ";
-
                     if($_POST){
                         //print_r($_POST);
-                        
-
-
-                        
+                        $sqlpt1="";
                         if(!empty($_POST["sheduledate"])){
                             $sheduledate=$_POST["sheduledate"];
-                            $sqlmain.=" and schedule.scheduledate='$sheduledate' ";
+                            $sqlpt1=" schedule.scheduledate='$sheduledate' ";
+                        }
+
+
+                        $sqlpt2="";
+                        if(!empty($_POST["docid"])){
+                            $docid=$_POST["docid"];
+                            $sqlpt2=" doctor.docid=$docid ";
+                        }
+                        //echo $sqlpt2;
+                        //echo $sqlpt1;
+                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid";
+                        $sqllist=array($sqlpt1,$sqlpt2);
+                        $sqlkeywords=array(" where "," and ");
+                        $key2=0;
+                        foreach($sqllist as $key){
+
+                            if(!empty($key)){
+                                $sqlmain.=$sqlkeywords[$key2].$key;
+                                $key2++;
+                            };
                         };
-
-                        
-
                         //echo $sqlmain;
 
+                        
+                        
+                        //
+                    }else{
+                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  order by schedule.scheduledate desc";
+
                     }
+
 
 
                 ?>
@@ -210,14 +242,18 @@
                                     
                                 </th>
                                
+                                
+                                <th class="table-headin">
+                                    Bác sĩ
+                                </th>
                                 <th class="table-headin">
                                     
                                 
-                                    Tiêu đề phiên
+                                Tiêu đề phiên
                                     
                                     </th>
                                 
-                                <th class="table-headin" >
+                                <th class="table-headin" style="font-size:10px">
                                     
                                 Ngày và giờ của phiên
                                     
@@ -250,8 +286,8 @@
                                     <img src="../img/notfound.svg" width="25%">
                                     
                                     <br>
-                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
-                                    <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả &nbsp;</font></button>
+                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn !</p>
+                                    <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Xem tất cả cuộc hẹn &nbsp;</font></button>
                                     </a>
                                     </center>
                                     <br><br><br><br>
@@ -281,10 +317,13 @@
                                         
                                         </td>
                                         <td>
+                                        '.substr($docname,0,25).'
+                                        </td>
+                                        <td>
                                         '.substr($title,0,15).'
                                         </td>
-                                        <td style="text-align:center;;">
-                                            '.substr($scheduledate,0,10).' @'.substr($scheduletime,0,5).'
+                                        <td style="text-align:center;font-size:12px;">
+                                            '.substr($scheduledate,0,10).' <br>'.substr($scheduletime,0,5).'
                                         </td>
                                         
                                         <td style="text-align:center;">
@@ -345,30 +384,30 @@
 
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Thêm phiên mới.</p><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Add New Session.</p><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                 <form action="add-session.php" method="POST" class="add-new-form">
-                                    <label for="title" class="form-label">Tiêu đề phiên : </label>
+                                    <label for="title" class="form-label">Session Title : </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="text" name="title" class="input-text" placeholder="Tên phiên" required><br>
+                                    <input type="text" name="title" class="input-text" placeholder="Name of this Session" required><br>
                                 </td>
                             </tr>
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
-                                    <label for="docid" class="form-label">Chọn bác sĩ: </label>
+                                    <label for="docid" class="form-label">Select Doctor: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <select name="docid" id="" class="box" >
-                                    <option value="" disabled selected hidden>Chọn tên bác sĩ trong danh sách</option><br/>';
+                                    <option value="" disabled selected hidden>Choose Doctor Name from the list</option><br/>';
                                         
         
                                         $list11 = $database->query("select  * from  doctor;");
@@ -388,17 +427,17 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nop" class="form-label">Số lượng bệnh nhân/số cuộc hẹn: </label>
+                                    <label for="nop" class="form-label">Number of Patients/Appointment Numbers : </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="number" name="nop" class="input-text" min="0"  placeholder="Số hẹn cuối cùng của buổi này phụ thuộc vào số này" required><br>
+                                    <input type="number" name="nop" class="input-text" min="0"  placeholder="The final appointment number for this session depends on this number" required><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="date" class="form-label">Ngày phiên: </label>
+                                    <label for="date" class="form-label">Session Date: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -408,20 +447,20 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="time" class="form-label">Thời gian biểu: </label>
+                                    <label for="time" class="form-label">Schedule Time: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <input type="time" name="time" class="input-text" placeholder="Thời gian" required><br>
+                                    <input type="time" name="time" class="input-text" placeholder="Time" required><br>
                                 </td>
                             </tr>
                            
                             <tr>
                                 <td colspan="2">
-                                    <input type="reset" value="Làm mới" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 
-                                    <input type="submit" value="Đặt phiên này" class="login-btn btn-primary btn" name="shedulesubmit">
+                                    <input type="submit" value="Place this Session" class="login-btn btn-primary btn" name="shedulesubmit">
                                 </td>
                 
                             </tr>
@@ -466,12 +505,12 @@
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
-                        <h2>Bạn có chắc chắn?</h2>
+                        <h2>Are you sure?</h2>
                         <a class="close" href="appointment.php">&times;</a>
                         <div class="content">
-                            Bạn có muốn xóa bản ghi này?<br><br>
-                            Tên bệnh nhân: &nbsp;<b>'.substr($nameget,0,40).'</b><br>
-                            Số cuộc hẹn &nbsp; : <b>'.substr($apponum,0,40).'</b><br><br>
+                            You want to delete this record<br><br>
+                            Patient Name: &nbsp;<b>'.substr($nameget,0,40).'</b><br>
+                            Appointment number &nbsp; : <b>'.substr($apponum,0,40).'</b><br><br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -503,7 +542,7 @@
                         <h2></h2>
                         <a class="close" href="doctors.php">&times;</a>
                         <div class="content">
-                            Hệ thống quản lý bệnh viện<br>
+                            eDoc Web App<br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
@@ -511,14 +550,14 @@
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
                                 </td>
                             </tr>
                             
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Tên: </label>
+                                    <label for="name" class="form-label">Name: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -539,7 +578,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">Số CCCD: </label>
+                                    <label for="nic" class="form-label">NIC: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -549,7 +588,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">SĐT: </label>
+                                    <label for="Tele" class="form-label">Telephone: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -559,7 +598,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Chuyên khoa: </label>
+                                    <label for="spec" class="form-label">Specialties: </label>
                                     
                                 </td>
                             </tr>

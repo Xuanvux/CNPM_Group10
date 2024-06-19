@@ -39,7 +39,11 @@
 
     //import database
     include("../connection.php");
-    $userrow = $database->query("select * from doctor where docemail='$useremail'");
+    $sqlmain= "select * from doctor where docemail=?";
+    $stmt = $database->prepare($sqlmain);
+    $stmt->bind_param("s",$useremail);
+    $stmt->execute();
+    $userrow = $stmt->get_result();
     $userfetch=$userrow->fetch_assoc();
     $userid= $userfetch["docid"];
     $username=$userfetch["docname"];
@@ -103,12 +107,12 @@
         <?php       
 
                     $selecttype="My";
-                    $current="My patients Only";
+                    $current="Chỉ bệnh nhân của tôi";
                     if($_POST){
 
                         if(isset($_POST["search"])){
                             $keyword=$_POST["search12"];
-                            
+                            /*TODO: make and understand */
                             $sqlmain= "select * from patient where pemail='$keyword' or pname='$keyword' or pname like '$keyword%' or pname like '%$keyword' or pname like '%$keyword%' ";
                             $selecttype="my";
                         }
@@ -117,11 +121,11 @@
                             if($_POST["showonly"]=='all'){
                                 $sqlmain= "select * from patient";
                                 $selecttype="All";
-                                $current="Tất cả bệnh nhân";
+                                $current="All patients";
                             }else{
                                 $sqlmain= "select * from appointment inner join patient on patient.pid=appointment.pid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.docid=$userid;";
                                 $selecttype="My";
-                                $current="Chỉ những bệnh nhân của tôi";
+                                $current="Chỉ bệnh nhân của tôi";
                             }
                         }
                     }else{
@@ -137,14 +141,14 @@
                 <tr >
                     <td width="13%">
 
-                    <a href="patient.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                    <a href="patient.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Trở lại</font></button></a>
                         
                     </td>
                     <td>
                         
                         <form action="" method="post" class="header-search">
 
-                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Tìm tên bệnh nhân hoặc Email" list="patient">&nbsp;&nbsp;
+                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Tìm kiếm tên bệnh nhân hoặc Email" list="patient">&nbsp;&nbsp;
                             
                             <?php
                                 echo '<datalist id="patient">';
@@ -174,7 +178,7 @@
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
-                        date_default_timezone_set('Asia/Kolkata');
+                        date_default_timezone_set('Asia/Ho_Chi_Minh');
 
                         $date = date('Y-m-d');
                         echo $date;
@@ -203,19 +207,19 @@
                         <form action="" method="post">
                         
                         <td  style="text-align: right;">
-                        Hiển thị chi tiết về : &nbsp;
+                        Hiển thị chi tiết: &nbsp;
                         </td>
                         <td width="30%">
                         <select name="showonly" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
                                     <option value="" disabled selected hidden><?php echo $current   ?></option><br/>
-                                    <option value="my">Chỉ bệnh nhân của tôi</option><br/>
+                                    <option value="my">Chỉ bệnh nhân của tôi</option><br/>
                                     <option value="all">Tất cả bệnh nhân</option><br/>
                                     
 
                         </select>
                     </td>
                     <td width="12%">
-                        <input type="submit"  name="filter" value="Lọc" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
+                        <input type="submit"  name="filter" value=" Lọc" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
                         </form>
                     </td>
 
@@ -282,7 +286,7 @@
                                     
                                     <br>
                                     <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Chúng tôi không thể tìm thấy bất cứ điều gì liên quan đến từ khóa của bạn!</p>
-                                    <a class="non-style-link" href="patient.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả bệnh nhân &nbsp;</font></button>
+                                    <a class="non-style-link" href="patient.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Hiển thị tất cả bệnh nhân &nbsp;</font></button>
                                     </a>
                                     </center>
                                     <br><br><br><br>
@@ -346,10 +350,13 @@
     <?php 
     if($_GET){
         
-        $id=$_GET["id"];
-        $action=$_GET["action"];
-            $sqlmain= "select * from patient where pid='$id'";
-            $result= $database->query($sqlmain);
+            $id=$_GET["id"];
+            $action=$_GET["action"];
+            $sqlmain= "select * from patient where pid=?";
+            $stmt = $database->prepare($sqlmain);
+            $stmt->bind_param("i",$id);
+            $stmt->execute();
+            $result = $stmt->get_result();
             $row=$result->fetch_assoc();
             $name=$row["pname"];
             $email=$row["pemail"];
@@ -370,7 +377,7 @@
                         
                             <tr>
                                 <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết.</p><br><br>
+                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Xem chi tiết</p><br><br>
                                 </td>
                             </tr>
                             <tr>
